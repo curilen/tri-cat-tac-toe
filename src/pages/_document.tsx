@@ -1,8 +1,9 @@
-import { Html, Head, Main, NextScript } from 'next/document';
+import { Html, Head, Main, NextScript, DocumentProps } from 'next/document';
 
-const Document = () => {
+const Document = (props: DocumentProps) => {
+  const defaultLocale = props?.locale || process.env.GAME_DEFAULT_LOCALE || '';
   return (
-    <Html lang="en">
+    <Html lang={defaultLocale}>
       <Head />
       <body>
         <Main />
