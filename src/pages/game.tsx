@@ -2,6 +2,8 @@ import { GetStaticProps } from 'next/types';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 
+import MainLayout from '@/layouts/MainLayout';
+
 const I18N_KEY_NS_PAGE = 'game-page';
 
 export const getStaticProps: GetStaticProps<IGamePageProps> = async ({
@@ -21,6 +23,10 @@ export const getStaticProps: GetStaticProps<IGamePageProps> = async ({
 
 const GamePage = () => {
   const { t } = useTranslation([I18N_KEY_NS_PAGE]);
-  return <section>{t(`${I18N_KEY_NS_PAGE}:info.description`)}</section>;
+  return (
+    <MainLayout>
+      <section>{t(`${I18N_KEY_NS_PAGE}:info.description`)}</section>;
+    </MainLayout>
+  );
 };
 export default GamePage;

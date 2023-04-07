@@ -1,6 +1,7 @@
-import Head from 'next/head';
-import { GetStaticProps } from 'next/types';
+import type { GetStaticProps } from 'next/types';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+
+import MainLayout from '@/layouts/MainLayout';
 
 const I18N_KEY_NS_PAGE = 'game-page';
 
@@ -20,17 +21,7 @@ export const getStaticProps: GetStaticProps<IHomePageProps> = async ({
 };
 
 const HomePage = () => {
-  return (
-    <>
-      <Head>
-        <title>Tri-Cat-Tac-Toe</title>
-        <meta name="description" content="Tri-Cat-Tac-Toe" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <main></main>
-    </>
-  );
+  return <MainLayout></MainLayout>;
 };
 
 export default HomePage;
