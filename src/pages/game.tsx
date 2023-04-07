@@ -1,8 +1,12 @@
 import { GetStaticProps } from 'next/types';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { useTranslation } from 'next-i18next';
+//import { useTranslation } from 'next-i18next';
+
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls } from '@react-three/drei';
 
 import MainLayout from '@/layouts/MainLayout';
+import MainCamera from '@/components/Game/MainCamera';
 
 const I18N_KEY_NS_PAGE = 'game-page';
 
@@ -22,10 +26,17 @@ export const getStaticProps: GetStaticProps<IGamePageProps> = async ({
 };
 
 const GamePage = () => {
-  const { t } = useTranslation([I18N_KEY_NS_PAGE]);
+  //const { t } = useTranslation([I18N_KEY_NS_PAGE]);
   return (
     <MainLayout>
-      <section>{t(`${I18N_KEY_NS_PAGE}:info.description`)}</section>;
+      <Canvas shadows>
+        <MainCamera />
+        <mesh>
+          <sphereGeometry />
+          <meshStandardMaterial color="hotpink" />
+        </mesh>
+        <OrbitControls />
+      </Canvas>
     </MainLayout>
   );
 };
