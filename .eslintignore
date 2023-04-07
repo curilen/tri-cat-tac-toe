@@ -1,0 +1,4 @@
+.eslintrc.js
+.lintstagedrc.js
+.prettierrc.js
+next-env.d.ts
