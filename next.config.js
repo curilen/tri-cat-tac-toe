@@ -8,7 +8,16 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: false,
-  i18n
+  i18n,
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/game',
+        permanent: true,
+      },
+    ]
+  },
 }
 
 module.exports = withBundleAnalyzer(nextConfig)
