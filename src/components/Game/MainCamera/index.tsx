@@ -9,8 +9,8 @@ const MainCamera = forwardRef<Camera | null, unknown>(function (_, cameraRef) {
       ref={cameraRef}
       makeDefault
       position={CAMERA_DEFAULT_POSITION}
-      near={0.1}
-      far={50}
+      //near={0.1}
+      //far={50}
       aspect={window.innerWidth / window.innerHeight}
     />
   );

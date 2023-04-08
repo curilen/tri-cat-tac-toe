@@ -12,6 +12,7 @@ import { GAME_BACKGROUND_COLOR, LIGHT_COLOR } from '@/constants/colors';
 import MainLayout from '@/layouts/MainLayout';
 import MainCamera from '@/components/Game/MainCamera';
 import Board from '@/components/Game/Board';
+import GameTitle from '@/components/Game/GameTitle';
 
 export const getStaticProps: GetStaticProps<IGamePageProps> = async ({
   locale,
@@ -40,6 +41,8 @@ const GamePage = () => {
         <color attach="background" args={[GAME_BACKGROUND_COLOR]} />
 
         <Suspense fallback={null}>
+          <GameTitle />
+
           <Board />
 
           <OrbitControls camera={cameraRef.current || undefined} />

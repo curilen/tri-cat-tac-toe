@@ -6,3 +6,4 @@ export const LIGHTS_BOARD_DEFAULT_POSITION = [
   new Vector3(0, 8, 5),
   new Vector3(0, 8, -5),
 ];
+export const BOARD_DISTANCE_MIN = 6;
