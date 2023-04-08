@@ -1,26 +1,20 @@
-import { useMemo } from 'react';
-import { useThree } from '@react-three/fiber';
-import { OrthographicCamera } from '@react-three/drei';
+import { forwardRef } from 'react';
+import type { Camera } from 'three/src/cameras/Camera';
+import { PerspectiveCamera } from '@react-three/drei';
+import { CAMERA_DEFAULT_POSITION } from '@/constants/positions';
 
-const frustumSize = 20;
-
-function MainCamera() {
-  const { size } = useThree();
-  const aspect = useMemo(() => size.width / size.height, [size]);
-  const frustumWidth = useMemo(() => frustumSize * aspect, [aspect]);
-
+const MainCamera = forwardRef<Camera | null, unknown>(function (_, cameraRef) {
   return (
-    <OrthographicCamera
+    <PerspectiveCamera
+      ref={cameraRef}
       makeDefault
-      left={-frustumWidth / 2}
-      right={frustumWidth / 2}
-      top={frustumSize / 2}
-      bottom={-frustumSize / 2}
+      position={CAMERA_DEFAULT_POSITION}
       near={0.1}
-      far={500}
-      position={[0, 0, 10]}
+      far={50}
+      aspect={window.innerWidth / window.innerHeight}
     />
   );
-}
+});
 
+MainCamera.displayName = 'MainCamera';
 export default MainCamera;

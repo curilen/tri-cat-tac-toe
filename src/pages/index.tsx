@@ -1,16 +1,16 @@
 import type { GetStaticProps } from 'next/types';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-import MainLayout from '@/layouts/MainLayout';
+import { I18N_KEY_NS_GAME_PAGE } from '@/constants/common';
 
-const I18N_KEY_NS_PAGE = 'game-page';
+import MainLayout from '@/layouts/MainLayout';
 
 export const getStaticProps: GetStaticProps<IHomePageProps> = async ({
   locale,
 }) => {
   const pageLocale = locale || process.env.GAME_DEFAULT_LOCALE;
   const translations = await serverSideTranslations(pageLocale, [
-    I18N_KEY_NS_PAGE,
+    I18N_KEY_NS_GAME_PAGE,
   ]);
 
   return {
