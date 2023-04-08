@@ -2,5 +2,17 @@
   "info": {
     "title": "Tri-Cat-Tac-Toe",
     "description": "Ejemplo de descripción"
+  },
+  "gameOption": {
+    "mode": {
+      "title": "Modo de juego",
+      "options": {
+        "OneVSOne": "1vs1",
+        "OneVSCPU": "1vsCPU"
+      }
+    },
+    "difficulty": {
+      "title": "Dificultad"
+    }
   }
 }

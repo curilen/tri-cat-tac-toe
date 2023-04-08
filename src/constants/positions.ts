@@ -7,3 +7,11 @@ export const LIGHTS_BOARD_DEFAULT_POSITION = [
   new Vector3(0, 8, -5),
 ];
 export const BOARD_DISTANCE_MIN = 6;
+export const BOARD_TEXT_ZAXIS_MIN = 0.8;
+
+export const OPTION_BUTTON_HEIGHT = 1.5;
+export const OPTION_BUTTON_POSITION = new Vector3(
+  0,
+  0,
+  OPTION_BUTTON_HEIGHT / 2
+);

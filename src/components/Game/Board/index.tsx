@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { LIGHT_COLOR } from '@/constants/colors';
 import {
   DEFAULT_POSITION,
@@ -6,7 +7,11 @@ import {
 import { BOARD_TEXTURES, BOARD_TEXTURES_CONFIG } from '@/constants/textures';
 import useMyTextures from '@/hooks/useMyTextures';
 
-const Board = () => {
+interface IBoardProps {
+  children?: ReactNode;
+}
+
+const Board = ({ children }: IBoardProps) => {
   const { textures } = useMyTextures(BOARD_TEXTURES);
 
   return (
@@ -30,6 +35,7 @@ const Board = () => {
           {...BOARD_TEXTURES_CONFIG}
         />
       </mesh>
+      {children ? children : null}
     </group>
   );
 };

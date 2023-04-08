@@ -1,4 +1,4 @@
-import { Suspense, useRef } from 'react';
+import { Suspense, useRef, useState } from 'react';
 import { GetStaticProps } from 'next/types';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
@@ -9,10 +9,13 @@ import { OrbitControls } from '@react-three/drei';
 import { I18N_KEY_NS_GAME_PAGE } from '@/constants/common';
 import { GAME_BACKGROUND_COLOR, LIGHT_COLOR } from '@/constants/colors';
 
+import GameLogic from '@/gameLogic/';
+
 import MainLayout from '@/layouts/MainLayout';
 import MainCamera from '@/components/Game/MainCamera';
 import Board from '@/components/Game/Board';
 import GameTitle from '@/components/Game/GameTitle';
+import GameOptions from '@/components/Game/GameOptions';
 
 export const getStaticProps: GetStaticProps<IGamePageProps> = async ({
   locale,
@@ -31,6 +34,7 @@ export const getStaticProps: GetStaticProps<IGamePageProps> = async ({
 
 const GamePage = () => {
   const cameraRef = useRef<Camera | null>(null);
+  const [gameLogic] = useState(() => new GameLogic());
 
   return (
     <MainLayout>
@@ -43,7 +47,11 @@ const GamePage = () => {
         <Suspense fallback={null}>
           <GameTitle />
 
-          <Board />
+          <Board>
+            {!gameLogic.canPlay ? (
+              <GameOptions option={gameLogic.gameOptions?.stage} />
+            ) : null}
+          </Board>
 
           <OrbitControls camera={cameraRef.current || undefined} />
         </Suspense>
