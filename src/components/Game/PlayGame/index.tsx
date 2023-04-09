@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useCallback, useMemo } from 'react';
 
 import GameLogic from '@/gameLogic';
 import GameToken from '@/components/Game/GameToken';
@@ -8,10 +8,25 @@ interface IPlayGameProps {
 }
 
 const PlayGame = ({ game }: IPlayGameProps) => {
-  console.log(game);
+  const tokenList = useMemo(
+    () => game.gameSettings?.getTokenList() || [],
+    [game.gameSettings]
+  );
+
+  const TokensComponent = useCallback(() => {
+    return (
+      <>
+        {tokenList.map((token, idx) => {
+          const value = game.tokenSelected[idx];
+          return <GameToken key={`token-${idx}`} {...token} value={value} />;
+        })}
+      </>
+    );
+  }, [tokenList, game.tokenSelected]);
+
   return (
     <group>
-      <GameToken />
+      <TokensComponent />
     </group>
   );
 };

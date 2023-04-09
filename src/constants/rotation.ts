@@ -1,0 +1,6 @@
+export const GAME_TOKEN_MAX_ROTATION_DEGREES = 360;
+export enum GAME_TOKEN_ROTATION_SPEED {
+  SLOW = 0.01,
+  NORMAL = 0.1,
+  FAST = 0.25,
+}

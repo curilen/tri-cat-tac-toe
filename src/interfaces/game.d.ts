@@ -9,3 +9,9 @@ interface IGamePlayers {
   token?: keyof IGameTokens;
   won: number;
 }
+
+interface IGameTokenElement {
+  order: number;
+  position: import('three').Vector3;
+  rotation?: import('three').Euler;
+}
