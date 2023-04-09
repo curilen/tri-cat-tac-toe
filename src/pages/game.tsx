@@ -60,7 +60,7 @@ const GamePage = () => {
           <Board>
             {!gameLogic.canPlay && gameLogic.gameOptions ? (
               <GameOptions
-                option={gameLogic.gameOptions.stage}
+                options={gameLogic.gameOptions}
                 finishStage={handleFinisGameOptionStage}
               />
             ) : null}

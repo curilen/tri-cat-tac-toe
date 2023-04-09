@@ -5,14 +5,14 @@ import {
   GAME_STAGE_DEFAULT,
 } from '@/constants/game';
 
-interface IGameOptions {
+interface IGameOptionsLogic {
   mode?: GAME_OPTIONS_MODE;
   difficulty?: GAME_OPTIONS_DIFFICULTY;
   readonly stage: GAME_OPTIONS_STAGES;
   isComplete: boolean;
 }
 
-export default class GameOptions implements IGameOptions {
+export default class GameOptionsLogic implements IGameOptionsLogic {
   private _mode?: GAME_OPTIONS_MODE;
   private _difficulty?: GAME_OPTIONS_DIFFICULTY;
   private _stage: GAME_OPTIONS_STAGES;

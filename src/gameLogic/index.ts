@@ -1,10 +1,10 @@
-import GameOptions from './gameOptions';
+import GameOptionsLogic from './gameOptions';
 
 export default class GameLogic {
-  private _gameOptions?: GameOptions;
+  private _gameOptions?: GameOptionsLogic;
 
   constructor() {
-    this._gameOptions = new GameOptions();
+    this._gameOptions = new GameOptionsLogic();
   }
 
   public get gameOptions() {

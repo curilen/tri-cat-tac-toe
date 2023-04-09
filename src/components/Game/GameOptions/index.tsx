@@ -2,20 +2,22 @@ import { useCallback } from 'react';
 import { useTranslation } from 'next-i18next';
 import { Center } from '@react-three/drei';
 
-import { GAME_OPTIONS_MODE, GAME_OPTIONS_STAGES } from '@/constants/game';
+import { GAME_OPTIONS_STAGES } from '@/constants/game';
 import { BOARD_TEXT_ZAXIS_MIN } from '@/constants/positions';
 import { I18N_KEY_NS_GAME_PAGE } from '@/constants/common';
 import { BOARD_TEXT_COLOR } from '@/constants/colors';
 
+import GameOptionsLogic from '@/gameLogic/gameOptions';
+
 import GameText from '@/components/Game/GameText';
-import OptionButton from '@/components/Game/OptionButton';
+import GameOptionsMode from '@/components/Game/GameOptions/Mode';
 
 interface IGameOptionsProps {
-  option: GAME_OPTIONS_STAGES;
+  options: GameOptionsLogic;
   finishStage?: (value: string) => void;
 }
 
-const GameOptions = ({ option, finishStage }: IGameOptionsProps) => {
+const GameOptions = ({ options, finishStage }: IGameOptionsProps) => {
   const { t } = useTranslation([I18N_KEY_NS_GAME_PAGE]);
 
   const handleOption = useCallback(
@@ -31,44 +33,30 @@ const GameOptions = ({ option, finishStage }: IGameOptionsProps) => {
   );
 
   const StageComponent = useCallback(() => {
-    const keyBaseTranslation = `${I18N_KEY_NS_GAME_PAGE}:gameOption.${option}`;
+    const keyBaseTranslation = `${I18N_KEY_NS_GAME_PAGE}:gameOption.${options.stage}`;
 
-    if (option === GAME_OPTIONS_STAGES.Mode) {
-      return (
-        <group>
-          <OptionButton
-            id={GAME_OPTIONS_MODE.OneVSOne}
-            positionX={-2}
-            text={t(
-              `${keyBaseTranslation}:options.${GAME_OPTIONS_MODE.OneVSOne}`
-            )}
-            textSize={0.6}
-            onClick={handleOption}
+    switch (options.stage) {
+      case GAME_OPTIONS_STAGES.Mode:
+        return (
+          <GameOptionsMode
+            baseKeyTranslation={keyBaseTranslation}
+            handleOption={handleOption}
           />
-          <OptionButton
-            id={GAME_OPTIONS_MODE.OneVSCPU}
-            positionX={2}
-            text={t(
-              `${keyBaseTranslation}:options.${GAME_OPTIONS_MODE.OneVSCPU}`
-            )}
-            textSize={0.4}
-            onClick={handleOption}
-          />
-        </group>
-      );
-    } else if (option === GAME_OPTIONS_STAGES.Difficulty) {
-      return <></>;
-    } else {
-      return <></>;
+        );
+      case GAME_OPTIONS_STAGES.Difficulty:
+        return <></>;
+      default:
+        return <></>;
     }
-  }, [option, t, handleOption]);
+  }, [options, handleOption]);
 
   return (
     <group position={[0, 3, 0]}>
       <group>
         <Center disableY position={[0, 0, BOARD_TEXT_ZAXIS_MIN]}>
           <GameText color={BOARD_TEXT_COLOR} isTitle>
-            {t(`${I18N_KEY_NS_GAME_PAGE}:gameOption.${option}.title`) || ''}
+            {t(`${I18N_KEY_NS_GAME_PAGE}:gameOption.${options.stage}.title`) ||
+              ''}
           </GameText>
         </Center>
       </group>
