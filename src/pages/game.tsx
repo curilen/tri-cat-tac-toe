@@ -34,7 +34,17 @@ export const getStaticProps: GetStaticProps<IGamePageProps> = async ({
 
 const GamePage = () => {
   const cameraRef = useRef<Camera | null>(null);
-  const [gameLogic] = useState(() => new GameLogic());
+  const [gameLogic, setGameLogic] = useState(() => new GameLogic());
+
+  const handleFinisGameOptionStage = (value: string) => {
+    if (!gameLogic.gameOptions) {
+      return;
+    }
+    gameLogic.gameOptions.finishStage(value);
+    setGameLogic((prevState) => {
+      return Object.assign({}, prevState);
+    });
+  };
 
   return (
     <MainLayout>
@@ -48,8 +58,11 @@ const GamePage = () => {
           <GameTitle />
 
           <Board>
-            {!gameLogic.canPlay ? (
-              <GameOptions option={gameLogic.gameOptions?.stage} />
+            {!gameLogic.canPlay && gameLogic.gameOptions ? (
+              <GameOptions
+                option={gameLogic.gameOptions.stage}
+                finishStage={handleFinisGameOptionStage}
+              />
             ) : null}
           </Board>
 

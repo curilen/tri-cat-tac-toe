@@ -24,9 +24,8 @@ export default class GameOptions implements IGameOptions {
   public get mode() {
     return this._mode;
   }
-  public set mode(newMode: GAME_OPTIONS_MODE | undefined) {
+  private set mode(newMode: GAME_OPTIONS_MODE | undefined) {
     this._mode = newMode;
-    this._stage = GAME_OPTIONS_STAGES.Difficulty; // Second Stage
   }
 
   public get difficulty() {
@@ -42,5 +41,25 @@ export default class GameOptions implements IGameOptions {
 
   public get isComplete() {
     return this._mode !== undefined && this.difficulty !== undefined;
+  }
+
+  public finishStage(newValue: string) {
+    switch (this._stage) {
+      case GAME_OPTIONS_STAGES.Mode:
+        return this.strategyMode(newValue);
+      default:
+        return;
+    }
+  }
+
+  private strategyMode(newValueString: string) {
+    const enumValues: string[] = Object.values(GAME_OPTIONS_MODE);
+    if (!enumValues.includes(newValueString)) {
+      return false;
+    }
+    const newMode = newValueString as keyof typeof GAME_OPTIONS_MODE;
+    this.mode = GAME_OPTIONS_MODE[newMode];
+    this._stage = GAME_OPTIONS_STAGES.Difficulty; // Second Stage
+    return true;
   }
 }
