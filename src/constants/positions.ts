@@ -18,3 +18,5 @@ export const OPTION_BUTTON_POSITION = new Vector3(
 export const OPTION_BACK_BUTTON_TEXT_POSITION = new Vector3(0, 0, 0.5);
 
 export const SIDE_BOARDS_ROTATION = 0.8;
+
+export const CURRENT_TURN_VALUE_POSITION = new Vector3(0, -1.5, 0);

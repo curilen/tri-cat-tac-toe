@@ -22,5 +22,11 @@
     "chooseToken": {
       "title": "Elige tu ficha"
     }
+  },
+  "currentTurn": {
+    "title": "Tu turno"
+  },
+  "scoreboard": {
+    "title": "Marcador"
   }
 }

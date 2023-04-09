@@ -22,5 +22,11 @@
     "chooseToken": {
       "title": "Choose your token"
     }
+  },
+  "currentTurn": {
+    "title": "Your Turn"
+  },
+  "scoreboard": {
+    "title": "Scoreboard"
   }
 }
