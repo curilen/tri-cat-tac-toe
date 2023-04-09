@@ -13,13 +13,19 @@ import GameText from '@/components/Game/GameText';
 import GameOptionsMode from '@/components/Game/GameOptions/Mode';
 import GameOptionsDifficulty from '@/components/Game/GameOptions/Difficulty';
 import GameOptionsChooseToken from '@/components/Game/GameOptions/ChooseToken';
+import GOButtonPreviousStage from '@/components/Game/GameOptions/ButtonPreviousStage';
 
 interface IGameOptionsProps {
   options: GameOptionsLogic;
   finishStage?: (value: string, id?: string) => void;
+  handlePreviousStage?: () => void;
 }
 
-const GameOptions = ({ options, finishStage }: IGameOptionsProps) => {
+const GameOptions = ({
+  options,
+  finishStage,
+  handlePreviousStage,
+}: IGameOptionsProps) => {
   const { t } = useTranslation([I18N_KEY_NS_GAME_PAGE]);
   const keyBaseTranslation = useMemo(
     () => `${I18N_KEY_NS_GAME_PAGE}:gameOption.${options.stage}`,
@@ -55,22 +61,34 @@ const GameOptions = ({ options, finishStage }: IGameOptionsProps) => {
         );
       case GAME_OPTIONS_STAGES.Difficulty:
         return (
-          <GameOptionsDifficulty
-            baseKeyTranslation={keyBaseTranslation}
-            handleOption={handleOption}
-          />
+          <>
+            <GameOptionsDifficulty
+              baseKeyTranslation={keyBaseTranslation}
+              handleOption={handleOption}
+            />
+            <GOButtonPreviousStage onClick={handlePreviousStage} />
+          </>
         );
       case GAME_OPTIONS_STAGES.ChooseToken:
         return (
-          <GameOptionsChooseToken
-            handleOption={handleOption}
-            player={currenPlayerChoose}
-          />
+          <>
+            <GameOptionsChooseToken
+              handleOption={handleOption}
+              player={currenPlayerChoose}
+            />
+            <GOButtonPreviousStage onClick={handlePreviousStage} />
+          </>
         );
       default:
         return null;
     }
-  }, [options, handleOption, keyBaseTranslation, currenPlayerChoose]);
+  }, [
+    options,
+    handleOption,
+    keyBaseTranslation,
+    currenPlayerChoose,
+    handlePreviousStage,
+  ]);
 
   return (
     <group position={[0, 3, 0]}>

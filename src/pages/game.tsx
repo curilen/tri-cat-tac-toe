@@ -1,4 +1,4 @@
-import { Suspense, useRef, useState } from 'react';
+import { Suspense, useCallback, useRef, useState } from 'react';
 import { GetStaticProps } from 'next/types';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
@@ -22,6 +22,7 @@ export const getStaticProps: GetStaticProps<IGamePageProps> = async ({
 }) => {
   const pageLocale = locale || process.env.GAME_DEFAULT_LOCALE;
   const translations = await serverSideTranslations(pageLocale, [
+    'common',
     I18N_KEY_NS_GAME_PAGE,
   ]);
 
@@ -46,6 +47,14 @@ const GamePage = () => {
     });
   };
 
+  const handlePreviousStageGameOptions = useCallback(() => {
+    setGameLogic((prevState) => {
+      //TODO: Review reactStrictMode, execute twice
+      prevState?.gameOptions?.previousStage();
+      return prevState.clone();
+    });
+  }, []);
+
   return (
     <MainLayout>
       <Canvas>
@@ -62,6 +71,7 @@ const GamePage = () => {
               <GameOptions
                 options={gameLogic.gameOptions}
                 finishStage={handleFinisGameOptionStage}
+                handlePreviousStage={handlePreviousStageGameOptions}
               />
             ) : null}
           </Board>

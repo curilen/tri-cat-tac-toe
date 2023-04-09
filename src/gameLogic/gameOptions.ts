@@ -44,7 +44,11 @@ export default class GameOptionsLogic implements IGameOptionsLogic {
   }
 
   private newPlayer(player: IGamePlayers) {
-    this._players = [...(this.players || [player])];
+    this._players = [...(this.players || []), player];
+  }
+
+  private resetPlayers() {
+    this._players = [];
   }
 
   public get stage() {
@@ -57,6 +61,25 @@ export default class GameOptionsLogic implements IGameOptionsLogic {
 
   public set isComplete(complete: boolean) {
     this._isComplete = complete;
+  }
+
+  public previousStage() {
+    switch (this.stage) {
+      case GAME_OPTIONS_STAGES.Difficulty:
+        this._stage = GAME_OPTIONS_STAGES.Mode;
+        break;
+
+      case GAME_OPTIONS_STAGES.ChooseToken:
+        if (this.mode === GAME_OPTIONS_MODE.OneVSOne) {
+          this._stage = GAME_OPTIONS_STAGES.Mode;
+        } else if (this.mode === GAME_OPTIONS_MODE.OneVSCPU) {
+          this._stage = GAME_OPTIONS_STAGES.Difficulty;
+        }
+        break;
+
+      default:
+        return;
+    }
   }
 
   public finishStage(newValue: string, refId?: string) {
@@ -77,11 +100,13 @@ export default class GameOptionsLogic implements IGameOptionsLogic {
     if (!enumValues.includes(newValueString)) {
       return false;
     }
-    const newMode = newValueString as keyof typeof GAME_OPTIONS_MODE;
-    this.mode = GAME_OPTIONS_MODE[newMode];
+    this.resetPlayers();
 
-    const defaultPlayers = GAME_PLAYERS_DEFAULT; // TODO: if you want something other than 1 and 2
+    const newMode = newValueString as GAME_OPTIONS_MODE;
+    this.mode = newMode;
 
+    // Check if you want something other than 1 and 2
+    const defaultPlayers = GAME_PLAYERS_DEFAULT;
     if (newMode === GAME_OPTIONS_MODE.OneVSCPU) {
       this.newPlayer(defaultPlayers[0]);
       this._stage = GAME_OPTIONS_STAGES.Difficulty; // Second Stage
@@ -98,9 +123,10 @@ export default class GameOptionsLogic implements IGameOptionsLogic {
     if (!enumValues.includes(newValueString)) {
       return false;
     }
-    const newDifficulty =
-      newValueString as keyof typeof GAME_OPTIONS_DIFFICULTY;
-    this.difficulty = GAME_OPTIONS_DIFFICULTY[newDifficulty];
+
+    const newDifficulty = newValueString as GAME_OPTIONS_DIFFICULTY;
+    this.difficulty = newDifficulty;
+
     this._stage = GAME_OPTIONS_STAGES.ChooseToken; // Third Stage
   }
 

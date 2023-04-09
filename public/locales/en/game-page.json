@@ -17,10 +17,10 @@
         "easy": "Easy",
         "medium": "Medium",
         "hard": "Hard"
-      },
-      "chooseToken": {
-        "title": "Choose your token"
       }
+    },
+    "chooseToken": {
+      "title": "Choose your token"
     }
   }
 }

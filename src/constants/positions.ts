@@ -15,3 +15,4 @@ export const OPTION_BUTTON_POSITION = new Vector3(
   0,
   OPTION_BUTTON_HEIGHT / 2
 );
+export const OPTION_BACK_BUTTON_TEXT_POSITION = new Vector3(0, 0, 0.5);
