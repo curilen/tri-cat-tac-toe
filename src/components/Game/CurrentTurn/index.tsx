@@ -10,7 +10,11 @@ import {
   GAME_BOARD_TEXTURES,
   GAME_BOARD_TEXTURES_CONFIG,
 } from '@/constants/textures';
-import { BOARD_TEXT_COLOR, CURRENT_TURN_VALUE_COLOR } from '@/constants/colors';
+import {
+  BOARD_TEXT_COLOR,
+  CURRENT_TURN_VALUE_COLOR,
+  TEXT_DEFAULT_COLOR,
+} from '@/constants/colors';
 import { I18N_KEY_NS_GAME_PAGE } from '@/constants/common';
 import useMyTextures from '@/hooks/useMyTextures';
 
@@ -47,6 +51,11 @@ const CurrentTurn = ({ currentTurn }: ICurrentTurnProps) => {
             position={CURRENT_TURN_VALUE_POSITION}
           >
             {currentTurn.token}
+          </GameText>
+        </Center>
+        <Center disableY position={[0, -1.5, 0.3]}>
+          <GameText color={TEXT_DEFAULT_COLOR} size={0.4}>
+            {currentTurn.displayName}
           </GameText>
         </Center>
       </group>

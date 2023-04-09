@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'next-i18next';
 import { Center } from '@react-three/drei';
 
@@ -89,6 +89,12 @@ const GameOptions = ({
     currenPlayerChoose,
     handlePreviousStage,
   ]);
+
+  useEffect(() => {
+    return () => {
+      document.body.style.cursor = 'auto';
+    };
+  }, []);
 
   return (
     <group position={[0, 3, 0]}>
