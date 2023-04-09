@@ -40,9 +40,9 @@ const GamePage = () => {
     if (!gameLogic.gameOptions) {
       return;
     }
-    gameLogic.gameOptions.finishStage(value);
     setGameLogic((prevState) => {
-      return Object.assign({}, prevState);
+      prevState?.gameOptions?.finishStage(value);
+      return prevState.clone();
     });
   };
 

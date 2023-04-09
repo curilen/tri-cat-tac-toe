@@ -14,4 +14,8 @@ export default class GameLogic {
   public get canPlay() {
     return this._gameOptions?.isComplete;
   }
+
+  public clone(): GameLogic {
+    return Object.assign(Object.create(Object.getPrototypeOf(this)), this);
+  }
 }
