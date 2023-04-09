@@ -13,7 +13,7 @@ import GameLogic from '@/gameLogic/';
 
 import MainLayout from '@/layouts/MainLayout';
 import MainCamera from '@/components/Game/MainCamera';
-import Board from '@/components/Game/Board';
+import GameBoard from '@/components/Game/GameBoard';
 import GameTitle from '@/components/Game/GameTitle';
 import GameOptions from '@/components/Game/GameOptions';
 
@@ -66,7 +66,7 @@ const GamePage = () => {
         <Suspense fallback={null}>
           <GameTitle />
 
-          <Board>
+          <GameBoard>
             {!gameLogic.canPlay && gameLogic.gameOptions ? (
               <GameOptions
                 options={gameLogic.gameOptions}
@@ -74,7 +74,7 @@ const GamePage = () => {
                 handlePreviousStage={handlePreviousStageGameOptions}
               />
             ) : null}
-          </Board>
+          </GameBoard>
 
           <OrbitControls camera={cameraRef.current || undefined} />
         </Suspense>

@@ -4,15 +4,18 @@ import {
   DEFAULT_POSITION,
   LIGHTS_BOARD_DEFAULT_POSITION,
 } from '@/constants/positions';
-import { BOARD_TEXTURES, BOARD_TEXTURES_CONFIG } from '@/constants/textures';
+import {
+  GAME_BOARD_TEXTURES,
+  GAME_BOARD_TEXTURES_CONFIG,
+} from '@/constants/textures';
 import useMyTextures from '@/hooks/useMyTextures';
 
-interface IBoardProps {
+interface IGameBoardProps {
   children?: ReactNode;
 }
 
-const Board = ({ children }: IBoardProps) => {
-  const { textures } = useMyTextures(BOARD_TEXTURES);
+const GameBoard = ({ children }: IGameBoardProps) => {
+  const { textures } = useMyTextures(GAME_BOARD_TEXTURES);
 
   return (
     <group>
@@ -32,7 +35,7 @@ const Board = ({ children }: IBoardProps) => {
         <meshStandardMaterial
           attach="material"
           {...textures}
-          {...BOARD_TEXTURES_CONFIG}
+          {...GAME_BOARD_TEXTURES_CONFIG}
         />
       </mesh>
       {children ? children : null}
@@ -40,4 +43,4 @@ const Board = ({ children }: IBoardProps) => {
   );
 };
 
-export default Board;
+export default GameBoard;
