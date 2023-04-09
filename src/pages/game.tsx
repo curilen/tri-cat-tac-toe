@@ -1,6 +1,7 @@
 import { Suspense, useCallback, useRef, useState } from 'react';
 import { GetStaticProps } from 'next/types';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import dynamic from 'next/dynamic';
 
 import type { Camera } from 'three/src/cameras/Camera';
 import { Canvas } from '@react-three/fiber';
@@ -16,6 +17,8 @@ import MainCamera from '@/components/Game/MainCamera';
 import GameBoard from '@/components/Game/GameBoard';
 import GameTitle from '@/components/Game/GameTitle';
 import GameOptions from '@/components/Game/GameOptions';
+const ScoreBoard = dynamic(import('@/components/Game/ScoreBoard'));
+const CurrentTurn = dynamic(import('@/components/Game/CurrentTurn'));
 
 export const getStaticProps: GetStaticProps<IGamePageProps> = async ({
   locale,
@@ -43,6 +46,9 @@ const GamePage = () => {
     }
     setGameLogic((prevState) => {
       prevState?.gameOptions?.finishStage(value, refId);
+      if (gameLogic.gameOptions?.isComplete) {
+        gameLogic.startGame();
+      }
       return prevState.clone();
     });
   };
@@ -75,6 +81,14 @@ const GamePage = () => {
               />
             ) : null}
           </GameBoard>
+
+          {gameLogic.canPlay && gameLogic.gameOptions?.players ? (
+            <ScoreBoard players={gameLogic.gameOptions.players} />
+          ) : null}
+
+          {gameLogic.canPlay && gameLogic.currentTurn ? (
+            <CurrentTurn currentTurn={gameLogic.currentTurn} />
+          ) : null}
 
           <OrbitControls camera={cameraRef.current || undefined} />
         </Suspense>

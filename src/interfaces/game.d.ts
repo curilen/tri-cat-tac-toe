@@ -7,4 +7,5 @@ interface IGamePlayers {
   id: string;
   displayName?: string;
   token?: keyof IGameTokens;
+  won: number;
 }

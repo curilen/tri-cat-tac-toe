@@ -107,13 +107,15 @@ export default class GameOptionsLogic implements IGameOptionsLogic {
 
     // Check if you want something other than 1 and 2
     const defaultPlayers = GAME_PLAYERS_DEFAULT;
+    this.newPlayer(defaultPlayers[0]);
+    this.newPlayer(defaultPlayers[1]);
+
     if (newMode === GAME_OPTIONS_MODE.OneVSCPU) {
-      this.newPlayer(defaultPlayers[0]);
       this._stage = GAME_OPTIONS_STAGES.Difficulty; // Second Stage
     } else if (newMode === GAME_OPTIONS_MODE.OneVSOne) {
-      this.newPlayer(defaultPlayers[0]);
-      this.newPlayer(defaultPlayers[1]);
       this._stage = GAME_OPTIONS_STAGES.ChooseToken; // Third Stage
+    } else {
+      return false;
     }
     return true;
   }
@@ -139,14 +141,11 @@ export default class GameOptionsLogic implements IGameOptionsLogic {
       return false;
     }
 
-    const idxPlayer = this.players?.findIndex((el) => el.id === refId) ?? -1;
-    if (idxPlayer < 0) {
-      return false;
-    }
+    this._players[0].token = newValueString as keyof IGameTokens;
+    this._players[1].token = Object.keys(GAME_TOKENS).find(
+      (key) => key !== newValueString
+    ) as keyof IGameTokens;
 
-    this._players[idxPlayer].token = newValueString as keyof IGameTokens;
-    // Check if you want to implement more than 2 players
-    //this._players[1].token = newValueString as keyof IGameTokens;
     this.isComplete = true;
 
     return true;

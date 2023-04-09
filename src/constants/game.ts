@@ -26,9 +26,11 @@ export const GAME_PLAYERS_DEFAULT: IGamePlayers[] = [
   {
     id: 'player-one',
     displayName: 'Player 1',
+    won: 0,
   },
   {
     id: 'player-two',
     displayName: 'Player 2',
+    won: 0,
   },
 ];
