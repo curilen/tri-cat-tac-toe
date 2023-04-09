@@ -12,3 +12,15 @@ export const GAME_BOARD_TEXTURES: ITexturePath = {
 export const GAME_BOARD_TEXTURES_CONFIG: ITextureConfig = {
   roughness: 2,
 };
+
+export const GAME_TOKEN_TEXTURES: ITexturePath = {
+  map: `${TEXTURE_PATH}/game-token/Token_Color.jpg`,
+  aoMap: `${TEXTURE_PATH}/game-token/Token_AO.jpg`,
+  metalnessMap: `${TEXTURE_PATH}/game-token/Token_Metallic.jpg`,
+  roughnessMap: `${TEXTURE_PATH}/game-token/Token_Roughness.jpg`,
+};
+
+export const GAME_TOKEN_TEXTURES_CONFIG: ITextureConfig = {
+  metalness: 0.6,
+  roughness: 0.2,
+};

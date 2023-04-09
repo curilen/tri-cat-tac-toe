@@ -19,6 +19,7 @@ import GameTitle from '@/components/Game/GameTitle';
 import GameOptions from '@/components/Game/GameOptions';
 const ScoreBoard = dynamic(import('@/components/Game/ScoreBoard'));
 const CurrentTurn = dynamic(import('@/components/Game/CurrentTurn'));
+const PlayGame = dynamic(import('@/components/Game/PlayGame'));
 
 export const getStaticProps: GetStaticProps<IGamePageProps> = async ({
   locale,
@@ -80,6 +81,7 @@ const GamePage = () => {
                 handlePreviousStage={handlePreviousStageGameOptions}
               />
             ) : null}
+            {gameLogic.canPlay ? <PlayGame game={gameLogic} /> : null}
           </GameBoard>
 
           {gameLogic.canPlay && gameLogic.gameOptions?.players ? (

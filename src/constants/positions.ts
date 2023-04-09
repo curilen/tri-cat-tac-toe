@@ -22,3 +22,5 @@ export const SIDE_BOARDS_ROTATION = 0.8;
 export const CURRENT_TURN_VALUE_POSITION = new Vector3(0, -1.5, 0);
 
 export const SCORE_BOARD_VALUE_POSITION = new Vector3(3, -0.2, 0);
+
+export const GAME_TOKEN_VALUE_POSITION = new Vector3(-0.5, -0.5, -0.3);
