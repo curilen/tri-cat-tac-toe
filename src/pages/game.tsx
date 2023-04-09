@@ -36,12 +36,12 @@ const GamePage = () => {
   const cameraRef = useRef<Camera | null>(null);
   const [gameLogic, setGameLogic] = useState(() => new GameLogic());
 
-  const handleFinisGameOptionStage = (value: string) => {
+  const handleFinisGameOptionStage = (value: string, refId?: string) => {
     if (!gameLogic.gameOptions) {
       return;
     }
     setGameLogic((prevState) => {
-      prevState?.gameOptions?.finishStage(value);
+      prevState?.gameOptions?.finishStage(value, refId);
       return prevState.clone();
     });
   };

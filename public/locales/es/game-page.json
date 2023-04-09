@@ -12,7 +12,15 @@
       }
     },
     "difficulty": {
-      "title": "Dificultad"
+      "title": "Dificultad",
+      "options": {
+        "easy": "Facil",
+        "medium": "Media",
+        "hard": "Dificil"
+      }
+    },
+    "chooseToken": {
+      "title": "Elige tu ficha"
     }
   }
 }

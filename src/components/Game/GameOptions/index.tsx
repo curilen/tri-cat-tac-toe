@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'next-i18next';
 import { Center } from '@react-three/drei';
 
@@ -11,30 +11,40 @@ import GameOptionsLogic from '@/gameLogic/gameOptions';
 
 import GameText from '@/components/Game/GameText';
 import GameOptionsMode from '@/components/Game/GameOptions/Mode';
+import GameOptionsDifficulty from '@/components/Game/GameOptions/Difficulty';
+import GameOptionsChooseToken from '@/components/Game/GameOptions/ChooseToken';
 
 interface IGameOptionsProps {
   options: GameOptionsLogic;
-  finishStage?: (value: string) => void;
+  finishStage?: (value: string, id?: string) => void;
 }
 
 const GameOptions = ({ options, finishStage }: IGameOptionsProps) => {
   const { t } = useTranslation([I18N_KEY_NS_GAME_PAGE]);
+  const keyBaseTranslation = useMemo(
+    () => `${I18N_KEY_NS_GAME_PAGE}:gameOption.${options.stage}`,
+    [options.stage]
+  );
+
+  // Check if you want to implement more than 2 players
+  const currenPlayerChoose = useMemo(
+    () => (options.players ? options.players[0] : null),
+    [options.players]
+  );
 
   const handleOption = useCallback(
-    (id?: string) => {
-      if (id === undefined) {
+    (value?: string, id?: string) => {
+      if (value === undefined) {
         return;
       }
       if (finishStage) {
-        finishStage(id);
+        finishStage(value, id);
       }
     },
     [finishStage]
   );
 
   const StageComponent = useCallback(() => {
-    const keyBaseTranslation = `${I18N_KEY_NS_GAME_PAGE}:gameOption.${options.stage}`;
-
     switch (options.stage) {
       case GAME_OPTIONS_STAGES.Mode:
         return (
@@ -44,19 +54,30 @@ const GameOptions = ({ options, finishStage }: IGameOptionsProps) => {
           />
         );
       case GAME_OPTIONS_STAGES.Difficulty:
-        return <></>;
+        return (
+          <GameOptionsDifficulty
+            baseKeyTranslation={keyBaseTranslation}
+            handleOption={handleOption}
+          />
+        );
+      case GAME_OPTIONS_STAGES.ChooseToken:
+        return (
+          <GameOptionsChooseToken
+            handleOption={handleOption}
+            player={currenPlayerChoose}
+          />
+        );
       default:
-        return <></>;
+        return null;
     }
-  }, [options, handleOption]);
+  }, [options, handleOption, keyBaseTranslation, currenPlayerChoose]);
 
   return (
     <group position={[0, 3, 0]}>
       <group>
         <Center disableY position={[0, 0, BOARD_TEXT_ZAXIS_MIN]}>
           <GameText color={BOARD_TEXT_COLOR} isTitle>
-            {t(`${I18N_KEY_NS_GAME_PAGE}:gameOption.${options.stage}.title`) ||
-              ''}
+            {t(`${keyBaseTranslation}.title`) || ''}
           </GameText>
         </Center>
       </group>

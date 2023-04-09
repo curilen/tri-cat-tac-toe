@@ -8,7 +8,7 @@ import { memo } from 'react';
 
 interface IGameOptionsModeProps {
   baseKeyTranslation: string;
-  handleOption: (id?: string) => void;
+  handleOption: (value?: string) => void;
 }
 
 const GameOptionsMode = ({

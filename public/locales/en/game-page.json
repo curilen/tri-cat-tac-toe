@@ -12,7 +12,15 @@
       }
     },
     "difficulty": {
-      "title": "Difficulty"
+      "title": "Difficulty",
+      "options": {
+        "easy": "Easy",
+        "medium": "Medium",
+        "hard": "Hard"
+      },
+      "chooseToken": {
+        "title": "Choose your token"
+      }
     }
   }
 }
