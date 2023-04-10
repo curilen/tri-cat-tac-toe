@@ -25,5 +25,5 @@ export const SCORE_BOARD_VALUE_POSITION = new Vector3(3, -0.2, 0);
 
 export const GAME_TOKEN_VALUE_POSITION = new Vector3(-0.5, -0.5, -0.3);
 export const GAME_TOKEN_ZAXIS_MIN = 2;
-export const GAME_TOKEN_FIRST_XAXIS = 3;
+export const GAME_TOKEN_FIRST_XAXIS = -3;
 export const GAME_TOKEN_FIRST_YAXIS = 3;
