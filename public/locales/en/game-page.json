@@ -24,7 +24,8 @@
     }
   },
   "currentTurn": {
-    "title": "Your Turn"
+    "title": "Your Turn",
+    "finished": "Game Over"
   },
   "scoreboard": {
     "title": "Victories"

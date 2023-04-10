@@ -18,7 +18,6 @@ import GameBoard from '@/components/Game/GameBoard';
 import GameTitle from '@/components/Game/GameTitle';
 import GameOptions from '@/components/Game/GameOptions';
 const ScoreBoard = dynamic(import('@/components/Game/ScoreBoard'));
-const CurrentTurn = dynamic(import('@/components/Game/CurrentTurn'));
 const PlayGame = dynamic(import('@/components/Game/PlayGame'));
 
 export const getStaticProps: GetStaticProps<IGamePageProps> = async ({
@@ -71,27 +70,24 @@ const GamePage = () => {
         <color attach="background" args={[GAME_BACKGROUND_COLOR]} />
 
         <Suspense fallback={null}>
-          <GameTitle />
+          <group position={[0, -1, 0]}>
+            <GameTitle />
 
-          <GameBoard>
-            {!gameLogic.canPlay && gameLogic.gameOptions ? (
-              <GameOptions
-                options={gameLogic.gameOptions}
-                finishStage={handleFinisGameOptionStage}
-                handlePreviousStage={handlePreviousStageGameOptions}
-              />
+            <GameBoard>
+              {!gameLogic.canPlay && gameLogic.gameOptions ? (
+                <GameOptions
+                  options={gameLogic.gameOptions}
+                  finishStage={handleFinisGameOptionStage}
+                  handlePreviousStage={handlePreviousStageGameOptions}
+                />
+              ) : null}
+              {gameLogic.canPlay ? <PlayGame game={gameLogic} /> : null}
+            </GameBoard>
+
+            {gameLogic.canPlay && gameLogic.gameOptions?.players ? (
+              <ScoreBoard players={gameLogic.gameOptions.players} />
             ) : null}
-            {gameLogic.canPlay ? <PlayGame game={gameLogic} /> : null}
-          </GameBoard>
-
-          {gameLogic.canPlay && gameLogic.gameOptions?.players ? (
-            <ScoreBoard players={gameLogic.gameOptions.players} />
-          ) : null}
-
-          {gameLogic.canPlay && gameLogic.currentTurn ? (
-            <CurrentTurn currentTurn={gameLogic.currentTurn} />
-          ) : null}
-
+          </group>
           <OrbitControls camera={cameraRef.current || undefined} />
         </Suspense>
       </Canvas>

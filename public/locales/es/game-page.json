@@ -24,7 +24,8 @@
     }
   },
   "currentTurn": {
-    "title": "Tu turno"
+    "title": "Tu turno",
+    "finished": "Juego terminado"
   },
   "scoreboard": {
     "title": "Victorias"

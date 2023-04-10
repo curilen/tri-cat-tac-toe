@@ -54,7 +54,7 @@ const ScoreBoard = ({ players }: IScoreBoardProps) => {
   }, [players]);
 
   return (
-    <group position={[-10, 0, 2]} rotation={[0, SIDE_BOARDS_ROTATION, 0]}>
+    <group position={[-8, 0, 2]} rotation={[0, SIDE_BOARDS_ROTATION, 0]}>
       <mesh>
         <boxGeometry attach="geometry" args={[5, 5, 0.5]} />
         <meshStandardMaterial

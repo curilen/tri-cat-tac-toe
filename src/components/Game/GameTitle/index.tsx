@@ -16,7 +16,7 @@ const GameTitle = () => {
         <GameText
           value={t(`${I18N_KEY_NS_GAME_PAGE}:info.title`) || ''}
           isTitle
-          size={1.5}
+          size={1.2}
           height={0.3}
         />
       </group>

@@ -20,20 +20,20 @@ import GameText from '@/components/Game/GameText';
 interface IGameTokenProps extends IGameTokenElement {
   order: number;
   value?: keyof IGameTokens | null;
-  onClick?: (event: ThreeEvent<MouseEvent>) => void | Promise<undefined>;
-  canRotate?: boolean;
+  canSelected?: boolean;
   rotationSpeed?: GAME_TOKEN_ROTATION_SPEED;
-  onFinishAnimation?: (orderToken: number) => void | Promise<undefined>;
+  onFinish?: (orderToken: number) => void | Promise<undefined>;
+  withAnimation?: boolean;
 }
 
 const GameToken = ({
   order,
   value,
   position,
-  onClick,
-  canRotate = true,
+  canSelected = true,
   rotationSpeed = GAME_TOKEN_ROTATION_SPEED.NORMAL,
-  onFinishAnimation,
+  onFinish,
+  withAnimation = true,
 }: IGameTokenProps) => {
   const meshRef = useRef<Mesh<BufferGeometry, Material | Material[]> | null>(
     null
@@ -49,17 +49,18 @@ const GameToken = ({
 
   const handleClick = (event: ThreeEvent<MouseEvent>) => {
     event.stopPropagation();
-    if (!canRotate) {
+    if (!canSelected) {
       return;
     }
-    isRotating.current = true;
-    if (onClick) {
-      onClick(event);
+    if (withAnimation) {
+      isRotating.current = true;
+    } else if (onFinish) {
+      onFinish(order);
     }
   };
 
   const handleRotation = useCallback(() => {
-    if (!canRotate || !meshRef.current) {
+    if (!canSelected || !meshRef.current) {
       return;
     }
 
@@ -70,12 +71,12 @@ const GameToken = ({
       if (meshRef.current.rotation.x >= radiantsDegrees) {
         isRotating.current = false;
         meshRef.current.rotation.x = 0;
-        if (onFinishAnimation) {
-          onFinishAnimation(order);
+        if (onFinish) {
+          onFinish(order);
         }
       }
     }
-  }, [canRotate, meshRef, rotationSpeed, onFinishAnimation, order]);
+  }, [canSelected, meshRef, rotationSpeed, onFinish, order]);
   useFrame(handleRotation, 0);
 
   return (
