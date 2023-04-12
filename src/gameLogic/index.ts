@@ -7,6 +7,7 @@ export default class GameLogic {
   private _gameSettings?: GameSettingsLogic;
   private _tokenSelected: Array<keyof IGameTokens | null> = [];
   private _isFinishGame = false;
+  private _firstPlayerPlay: IGamePlayers | null = null;
 
   constructor() {
     this._gameOptions = new GameOptionsLogic();
@@ -49,7 +50,9 @@ export default class GameLogic {
     if (!this.canPlay || !this.gameOptions?.players) {
       return false;
     }
+    this._gameSettings?.createVictoryPatterns();
     this._currentTurn = this.gameOptions?.players[Math.round(Math.random())];
+    this._firstPlayerPlay = this._currentTurn;
     this._isFinishGame = false;
     if (this._gameSettings) {
       this._tokenSelected = new Array(this._gameSettings.totalToken).fill(null);
@@ -72,12 +75,33 @@ export default class GameLogic {
     }
 
     this._tokenSelected[numOrderToken - 1] = this.currentTurn.token || null;
-    this.currentTurn = nextPlayer;
 
-    if (this._tokenSelected.every((val) => val !== null)) {
-      this._isFinishGame = true;
+    const movementsMade =
+      this._tokenSelected.filter((e) => e === this._firstPlayerPlay?.token)
+        .length || 0;
+    if (this.gameSettings?.winnerBeVerified(movementsMade)) {
+      if (this.isWinner()) {
+        this._isFinishGame = true;
+      }
     }
 
+    this.currentTurn = nextPlayer;
     return true;
+  }
+
+  private isWinner() {
+    const isWinner = false;
+    if (!this.gameSettings || !this.currentTurn) {
+      return isWinner;
+    }
+
+    const playerPositions: number[] = [];
+    for (let t = 0; t < this.tokenSelected.length; t++) {
+      if (this.tokenSelected[t] === this.currentTurn?.token) {
+        playerPositions.push(t);
+      }
+    }
+
+    return isWinner;
   }
 }
