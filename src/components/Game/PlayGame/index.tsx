@@ -56,6 +56,7 @@ const PlayGame = ({ game, onFinishGame }: IPlayGameProps) => {
       {game.currentTurn ? (
         <CurrentTurn
           currentTurn={game.currentTurn}
+          winner={game.winner}
           isFinished={game.isFinishGame}
         />
       ) : null}

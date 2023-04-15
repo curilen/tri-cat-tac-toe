@@ -25,7 +25,9 @@
   },
   "currentTurn": {
     "title": "Tu turno",
-    "finished": "Juego terminado"
+    "finished": "Juego terminado",
+    "winner": "El ganador es",
+    "tie": "Es un empate"
   },
   "scoreboard": {
     "title": "Victorias"

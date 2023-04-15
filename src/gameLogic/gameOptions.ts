@@ -63,6 +63,16 @@ export default class GameOptionsLogic implements IGameOptionsLogic {
     this._isComplete = complete;
   }
 
+  public newWinner(id: string) {
+    const idxWinner = this.players?.findIndex((p) => p.id === id) ?? -1;
+    if (this._players && idxWinner >= 0) {
+      this._players[idxWinner].won += 1;
+      this._players = [...this._players];
+      return true;
+    }
+    return false;
+  }
+
   public previousStage() {
     switch (this.stage) {
       case GAME_OPTIONS_STAGES.Difficulty:

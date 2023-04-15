@@ -8,6 +8,8 @@ export default class GameLogic {
   private _tokenSelected: Array<keyof IGameTokens | null> = [];
   private _isFinishGame = false;
   private _firstPlayerPlay: IGamePlayers | null = null;
+  private _winningPositions: number[] = [];
+  private _winner: IGamePlayers | null = null;
 
   constructor() {
     this._gameOptions = new GameOptionsLogic();
@@ -42,6 +44,14 @@ export default class GameLogic {
     return this._isFinishGame;
   }
 
+  public get winningPositions() {
+    return this._winningPositions;
+  }
+
+  public get winner() {
+    return this._winner;
+  }
+
   public clone(): GameLogic {
     return Object.assign(Object.create(Object.getPrototypeOf(this)), this);
   }
@@ -54,6 +64,8 @@ export default class GameLogic {
     this._currentTurn = this.gameOptions?.players[Math.round(Math.random())];
     this._firstPlayerPlay = this._currentTurn;
     this._isFinishGame = false;
+    this._winningPositions = [];
+    this._winner = null;
     if (this._gameSettings) {
       this._tokenSelected = new Array(this._gameSettings.totalToken).fill(null);
     }
@@ -82,6 +94,9 @@ export default class GameLogic {
     if (this.gameSettings?.winnerBeVerified(movementsMade)) {
       if (this.checkIsWinner()) {
         return true;
+      } else if (this._tokenSelected.every((t) => t !== null)) {
+        this._isFinishGame = true;
+        return true;
       }
     }
 
@@ -105,6 +120,10 @@ export default class GameLogic {
     isWinner = this.validateWinner(new Set(playerPositions));
     if (isWinner) {
       this._isFinishGame = true;
+      this._winner = this._currentTurn || null;
+      if (this.gameOptions) {
+        this.gameOptions.newWinner(this._winner?.id || '');
+      }
     }
     return isWinner;
   }
@@ -125,6 +144,7 @@ export default class GameLogic {
         }
       }
       if (foundAllElements) {
+        this._winningPositions = subarray;
         return true;
       }
     }

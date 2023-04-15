@@ -22,12 +22,14 @@ import GameText from '@/components/Game/GameText';
 
 interface ICurrentTurnProps {
   currentTurn: IGamePlayers;
+  winner?: IGamePlayers | null;
   isFinished?: boolean;
 }
 
 const CurrentTurn = ({
   currentTurn,
   isFinished = false,
+  winner = null,
 }: ICurrentTurnProps) => {
   const { t } = useTranslation([I18N_KEY_NS_GAME_PAGE]);
   const { textures } = useMyTextures(GAME_BOARD_TEXTURES);
@@ -68,11 +70,35 @@ const CurrentTurn = ({
 
       {isFinished ? (
         <group>
-          <Center disableY position={[0, 0.8, 0.3]}>
+          <Center disableY position={[0, 1.5, 0.3]}>
             <GameText color={BOARD_TEXT_COLOR} size={0.4}>
               {t(`${I18N_KEY_NS_GAME_PAGE}:currentTurn.finished`) || ''}
             </GameText>
           </Center>
+          {winner ? (
+            <>
+              <Center disableY position={[0, 0.8, 0.3]}>
+                <GameText color={BOARD_TEXT_COLOR} size={0.3}>
+                  {t(`${I18N_KEY_NS_GAME_PAGE}:currentTurn.winner`) || ''}
+                </GameText>
+              </Center>
+              <Center disableY position={[0, -0.5, 0.3]}>
+                <GameText color={CURRENT_TURN_VALUE_COLOR} size={0.5}>
+                  {winner.displayName}
+                </GameText>
+              </Center>
+            </>
+          ) : (
+            <Center disableY position={[0, 1.5, 0.3]}>
+              <GameText
+                color={CURRENT_TURN_VALUE_COLOR}
+                size={0.4}
+                position={CURRENT_TURN_VALUE_POSITION}
+              >
+                {t(`${I18N_KEY_NS_GAME_PAGE}:currentTurn.tie`) || ''}
+              </GameText>
+            </Center>
+          )}
         </group>
       ) : null}
     </group>

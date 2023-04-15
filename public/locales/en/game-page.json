@@ -25,7 +25,9 @@
   },
   "currentTurn": {
     "title": "Your Turn",
-    "finished": "Game Over"
+    "finished": "Game Over",
+    "winner": "The winner is",
+    "tie": "It's a tie"
   },
   "scoreboard": {
     "title": "Victories"
