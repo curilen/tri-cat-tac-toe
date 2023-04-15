@@ -1,22 +1,18 @@
 import { memo } from 'react';
 import type { ThreeEvent } from '@react-three/fiber';
 import { Center } from '@react-three/drei';
-import { useTranslation } from 'next-i18next';
 
-import {
-  BOARD_OPTION_BUTTON_COLOR,
-  BOARD_TEXT_COLOR,
-} from '@/constants/colors';
-import { OPTION_BACK_BUTTON_TEXT_POSITION } from '@/constants/positions';
+import { GAME_BUTTON_COLOR, GAME_BUTTON_TEXT_COLOR } from '@/constants/colors';
+import { GAME_BUTTON_TEXT_POSITION } from '@/constants/positions';
 
 import GameText from '@/components/Game/GameText';
 
-interface IGOButtonPreviousStageProps {
+interface IGameButtonProps {
+  text?: string;
+  children?: string;
   onClick?: () => void;
 }
-const GOButtonPreviousStage = ({ onClick }: IGOButtonPreviousStageProps) => {
-  const { t } = useTranslation(['common']);
-
+const GameButton = ({ text, children, onClick }: IGameButtonProps) => {
   const handleClick = (event: ThreeEvent<MouseEvent>) => {
     event.stopPropagation();
     if (onClick) {
@@ -39,20 +35,20 @@ const GOButtonPreviousStage = ({ onClick }: IGOButtonPreviousStageProps) => {
         <meshStandardMaterial
           attach="material"
           metalness={0.3}
-          color={BOARD_OPTION_BUTTON_COLOR}
+          color={GAME_BUTTON_COLOR}
         />
       </mesh>
       <Center disableZ>
         <GameText
-          value={t('common:back') || ''}
+          value={text || children || ''}
           size={0.5}
           height={0.1}
-          color={BOARD_TEXT_COLOR}
-          position={OPTION_BACK_BUTTON_TEXT_POSITION}
+          color={GAME_BUTTON_TEXT_COLOR}
+          position={GAME_BUTTON_TEXT_POSITION}
         />
       </Center>
     </group>
   );
 };
 
-export default memo(GOButtonPreviousStage);
+export default memo(GameButton);

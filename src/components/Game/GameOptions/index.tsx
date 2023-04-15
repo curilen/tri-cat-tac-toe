@@ -13,7 +13,7 @@ import GameText from '@/components/Game/GameText';
 import GameOptionsMode from '@/components/Game/GameOptions/Mode';
 import GameOptionsDifficulty from '@/components/Game/GameOptions/Difficulty';
 import GameOptionsChooseToken from '@/components/Game/GameOptions/ChooseToken';
-import GOButtonPreviousStage from '@/components/Game/GameOptions/ButtonPreviousStage';
+import GameButton from '@/components/Game/GameButton';
 
 interface IGameOptionsProps {
   options: GameOptionsLogic;
@@ -26,7 +26,8 @@ const GameOptions = ({
   finishStage,
   handlePreviousStage,
 }: IGameOptionsProps) => {
-  const { t } = useTranslation([I18N_KEY_NS_GAME_PAGE]);
+  const { t } = useTranslation(['common', I18N_KEY_NS_GAME_PAGE]);
+  const buttonText = useMemo(() => t('common:back') || '', [t]);
   const keyBaseTranslation = useMemo(
     () => `${I18N_KEY_NS_GAME_PAGE}:gameOption.${options.stage}`,
     [options.stage]
@@ -66,7 +67,7 @@ const GameOptions = ({
               baseKeyTranslation={keyBaseTranslation}
               handleOption={handleOption}
             />
-            <GOButtonPreviousStage onClick={handlePreviousStage} />
+            <GameButton text={buttonText || ''} onClick={handlePreviousStage} />
           </>
         );
       case GAME_OPTIONS_STAGES.ChooseToken:
@@ -76,7 +77,7 @@ const GameOptions = ({
               handleOption={handleOption}
               player={currenPlayerChoose}
             />
-            <GOButtonPreviousStage onClick={handlePreviousStage} />
+            <GameButton text={buttonText || ''} onClick={handlePreviousStage} />
           </>
         );
       default:
@@ -88,6 +89,7 @@ const GameOptions = ({
     keyBaseTranslation,
     currenPlayerChoose,
     handlePreviousStage,
+    buttonText,
   ]);
 
   useEffect(() => {
