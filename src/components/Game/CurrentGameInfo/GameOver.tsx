@@ -7,6 +7,7 @@ import { I18N_KEY_NS_GAME_PAGE } from '@/constants/common';
 
 import GameText from '@/components/Game/GameText';
 import { CURRENT_TURN_VALUE_POSITION } from '@/constants/positions';
+import GameButton from '../GameButton';
 
 interface IGameOverProps {
   winner: IGamePlayers | null;
@@ -47,6 +48,16 @@ const GameOver = ({ winner }: IGameOverProps) => {
           </GameText>
         </Center>
       )}
+
+      <Center disableY disableZ position={[0, -1.5, 0.5]}>
+        <GameButton
+          text={
+            t(`${I18N_KEY_NS_GAME_PAGE}:currentGameInfo.gameOver.newGame`) || ''
+          }
+          width={4.5}
+          depth={0.5}
+        />
+      </Center>
     </group>
   );
 };

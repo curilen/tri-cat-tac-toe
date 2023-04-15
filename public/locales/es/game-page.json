@@ -30,7 +30,8 @@
     "gameOver": {
       "title": "Juego terminado",
       "winner": "El ganador es",
-     "tie": "Es un empate"
+      "tie": "Es un empate",
+      "newGame": "Revancha"
     }
   },
   "scoreboard": {

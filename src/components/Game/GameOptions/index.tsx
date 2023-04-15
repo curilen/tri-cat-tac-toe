@@ -3,7 +3,10 @@ import { useTranslation } from 'next-i18next';
 import { Center } from '@react-three/drei';
 
 import { GAME_OPTIONS_STAGES } from '@/constants/game';
-import { BOARD_TEXT_ZAXIS_MIN } from '@/constants/positions';
+import {
+  BOARD_TEXT_ZAXIS_MIN,
+  BUTTON_PREVIOUS_STAGE_POSITION,
+} from '@/constants/positions';
 import { I18N_KEY_NS_GAME_PAGE } from '@/constants/common';
 import { BOARD_TEXT_COLOR } from '@/constants/colors';
 
@@ -67,7 +70,11 @@ const GameOptions = ({
               baseKeyTranslation={keyBaseTranslation}
               handleOption={handleOption}
             />
-            <GameButton text={buttonText || ''} onClick={handlePreviousStage} />
+            <GameButton
+              text={buttonText || ''}
+              onClick={handlePreviousStage}
+              position={BUTTON_PREVIOUS_STAGE_POSITION}
+            />
           </>
         );
       case GAME_OPTIONS_STAGES.ChooseToken:
@@ -77,7 +84,11 @@ const GameOptions = ({
               handleOption={handleOption}
               player={currenPlayerChoose}
             />
-            <GameButton text={buttonText || ''} onClick={handlePreviousStage} />
+            <GameButton
+              text={buttonText || ''}
+              onClick={handlePreviousStage}
+              position={BUTTON_PREVIOUS_STAGE_POSITION}
+            />
           </>
         );
       default:

@@ -1,9 +1,10 @@
-import { memo } from 'react';
+import { memo, useMemo } from 'react';
 import type { ThreeEvent } from '@react-three/fiber';
+import { Vector3 } from 'three';
 import { Center } from '@react-three/drei';
 
 import { GAME_BUTTON_COLOR, GAME_BUTTON_TEXT_COLOR } from '@/constants/colors';
-import { GAME_BUTTON_TEXT_POSITION } from '@/constants/positions';
+import { DEFAULT_POSITION } from '@/constants/positions';
 
 import GameText from '@/components/Game/GameText';
 
@@ -11,8 +12,23 @@ interface IGameButtonProps {
   text?: string;
   children?: string;
   onClick?: () => void;
+  position?: Vector3;
+  width?: number;
+  depth?: number;
 }
-const GameButton = ({ text, children, onClick }: IGameButtonProps) => {
+const GameButton = ({
+  text,
+  children,
+  onClick,
+  position = DEFAULT_POSITION,
+  width = 3,
+  depth = 1,
+}: IGameButtonProps) => {
+  const defaultTextPosition = useMemo(
+    () => new Vector3(0, 0, Math.round((depth / 2) * 10) / 10),
+    [depth]
+  );
+
   const handleClick = (event: ThreeEvent<MouseEvent>) => {
     event.stopPropagation();
     if (onClick) {
@@ -25,13 +41,13 @@ const GameButton = ({ text, children, onClick }: IGameButtonProps) => {
 
   return (
     <group
-      position={[0, -6, 1.5]}
+      position={position}
       onClick={handleClick}
       onPointerOver={() => handleChangeCursor(true)}
       onPointerOut={() => handleChangeCursor(false)}
     >
       <mesh rotation={[0, -Math.PI / 2, 0]}>
-        <boxGeometry attach="geometry" args={[1, 1, 3]} />
+        <boxGeometry attach="geometry" args={[depth, 1, width]} />
         <meshStandardMaterial
           attach="material"
           metalness={0.3}
@@ -44,7 +60,7 @@ const GameButton = ({ text, children, onClick }: IGameButtonProps) => {
           size={0.5}
           height={0.1}
           color={GAME_BUTTON_TEXT_COLOR}
-          position={GAME_BUTTON_TEXT_POSITION}
+          position={defaultTextPosition}
         />
       </Center>
     </group>
