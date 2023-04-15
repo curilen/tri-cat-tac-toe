@@ -2,3 +2,4 @@
 .lintstagedrc.js
 .prettierrc.js
 next-env.d.ts
+public

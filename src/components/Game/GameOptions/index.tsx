@@ -113,7 +113,7 @@ const GameOptions = ({
     <group position={[0, 3, 0]}>
       <group>
         <Center disableY position={[0, 0, BOARD_TEXT_ZAXIS_MIN]}>
-          <GameText color={BOARD_TEXT_COLOR} isTitle>
+          <GameText color={BOARD_TEXT_COLOR} isTitle size={1}>
             {t(`${keyBaseTranslation}.title`) || ''}
           </GameText>
         </Center>

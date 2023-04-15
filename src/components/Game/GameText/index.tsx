@@ -1,9 +1,9 @@
 import { memo, useMemo } from 'react';
 import type { Color, Vector3 } from 'three';
-import { FontLoader } from 'three/examples/jsm/loaders/FontLoader';
+import { Font, FontLoader } from 'three/examples/jsm/loaders/FontLoader';
 
-import gameFontNormal from '@public/assets/fonts/Josefin_Sans_Regular.json';
-import gameFontTitle from '@public/assets/fonts/Bombing_Regular.json';
+import gameFontNormal from '@public/assets/fonts/Normal_Regular.json';
+import gameFontTitle from '@public/assets/fonts/Title_Regular.json';
 
 import { TEXT_DEFAULT_COLOR } from '@/constants/colors';
 import { DEFAULT_POSITION } from '@/constants/positions';
@@ -16,6 +16,7 @@ interface IGameTextProps {
   size?: number;
   height?: number;
   isTitle?: boolean;
+  customFont?: Font;
 }
 
 const fontNormal = new FontLoader().parse(gameFontNormal);
@@ -26,11 +27,15 @@ const GameText = ({
   children,
   color = TEXT_DEFAULT_COLOR,
   position = DEFAULT_POSITION,
-  size = 1,
+  size = 0.8,
   height = 0.2,
   isTitle = false,
+  customFont,
 }: IGameTextProps) => {
-  const font = useMemo(() => (isTitle ? fontTitle : fontNormal), [isTitle]);
+  const font = useMemo(
+    () => (customFont ? customFont : isTitle ? fontTitle : fontNormal),
+    [isTitle, customFont]
+  );
   const text = useMemo(() => value || children || '', [value, children]);
 
   return (
