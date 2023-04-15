@@ -34,3 +34,10 @@ export const GAME_PLAYERS_DEFAULT: IGamePlayers[] = [
     won: 0,
   },
 ];
+
+export enum GAME_WINNING_TYPE_LINES {
+  COLUMN,
+  ROWS,
+  LEF_DIAGONAL,
+  RIGHT_DIAGONAL,
+}

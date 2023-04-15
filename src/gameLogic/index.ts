@@ -64,13 +64,11 @@ export default class GameLogic {
     if (this.gameOptions?.players) {
       const isRematch = this.gameOptions.players.some((p) => p.won > 0);
       let newIdxTurn = 0;
-      console.log('CHECK IS REMATCH', isRematch, this._currentTurn, this);
       if (isRematch && this._currentTurn) {
         const prevId = this.currentTurn?.id;
         newIdxTurn = this.gameOptions.players.findLastIndex(
           (p) => p.id !== prevId
         );
-        console.log('VALIDO EL JUGADOR PREVIO', prevId, newIdxTurn);
         if (newIdxTurn < 0) {
           newIdxTurn = 0;
         }

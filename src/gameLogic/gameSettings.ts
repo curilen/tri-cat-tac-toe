@@ -5,6 +5,7 @@ import {
   GAME_TOKEN_FIRST_YAXIS,
   GAME_TOKEN_ZAXIS_MIN,
 } from '@/constants/positions';
+import { GAME_WINNING_TYPE_LINES } from '@/constants/game';
 
 interface IGameSettingsLogic {
   totalToken: number;
@@ -20,6 +21,14 @@ export default class GameSettingsLogic implements IGameSettingsLogic {
 
   public get victoryPatterns() {
     return this._victoryPatterns;
+  }
+
+  public get totalColumns() {
+    return this._totalColumns;
+  }
+
+  public get totalRows() {
+    return this._totalRows;
   }
 
   public getTokenList() {
@@ -81,5 +90,28 @@ export default class GameSettingsLogic implements IGameSettingsLogic {
 
   public winnerBeVerified(movesPlayer: number) {
     return movesPlayer >= this._totalColumns || movesPlayer >= this._totalRows;
+  }
+
+  public getWinningTypeBoard(
+    winnerPositions: number[]
+  ): GAME_WINNING_TYPE_LINES | null {
+    //Rows
+    if (winnerPositions[1] === winnerPositions[0] + 1) {
+      return GAME_WINNING_TYPE_LINES.ROWS;
+    }
+
+    //Column
+    if (winnerPositions[1] === winnerPositions[0] + this._totalColumns) {
+      return GAME_WINNING_TYPE_LINES.COLUMN;
+    }
+
+    if (winnerPositions[1] === this._totalColumns + 1) {
+      if (winnerPositions[0] === 0) {
+        return GAME_WINNING_TYPE_LINES.LEF_DIAGONAL;
+      } else {
+        return GAME_WINNING_TYPE_LINES.RIGHT_DIAGONAL;
+      }
+    }
+    return null;
   }
 }
