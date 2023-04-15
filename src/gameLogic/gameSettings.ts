@@ -57,7 +57,7 @@ export default class GameSettingsLogic implements IGameSettingsLogic {
     for (let c = 0; c < this._totalColumns; c++) {
       const colsWinner = Array.from(
         { length: this._totalRows },
-        (_, index) => (c + index) * this._totalColumns
+        (_, index) => c + index * this._totalColumns
       );
       victoryPatterns.push(colsWinner);
     }
