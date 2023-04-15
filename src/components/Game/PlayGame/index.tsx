@@ -7,9 +7,10 @@ const CurrentTurn = dynamic(import('@/components/Game/CurrentTurn'));
 
 interface IPlayGameProps {
   game: GameLogic;
+  onFinishGame?: (game: GameLogic) => void;
 }
 
-const PlayGame = ({ game }: IPlayGameProps) => {
+const PlayGame = ({ game, onFinishGame }: IPlayGameProps) => {
   const [tokenSelected, setTokenSelected] = useState(game.tokenSelected);
 
   const tokenList = useMemo(
@@ -21,8 +22,11 @@ const PlayGame = ({ game }: IPlayGameProps) => {
     (numOrderToken: number) => {
       game.makeMove(numOrderToken);
       setTokenSelected([...game.tokenSelected]);
+      if (onFinishGame && game.isFinishGame) {
+        onFinishGame(game);
+      }
     },
-    [game]
+    [game, onFinishGame]
   );
 
   const TokensComponent = useCallback(() => {
@@ -36,13 +40,13 @@ const PlayGame = ({ game }: IPlayGameProps) => {
               {...token}
               value={value}
               onFinish={handleSelectToken}
-              canSelected={value === null}
+              canSelected={value === null && !game.isFinishGame}
             />
           );
         })}
       </>
     );
-  }, [tokenList, tokenSelected, handleSelectToken]);
+  }, [tokenList, tokenSelected, handleSelectToken, game.isFinishGame]);
 
   return (
     <>

@@ -61,6 +61,9 @@ const GamePage = () => {
     });
   }, []);
 
+  const handleOnFinishGame = (newGame: GameLogic) =>
+    setGameLogic(newGame.clone());
+
   return (
     <MainLayout>
       <Canvas>
@@ -81,7 +84,9 @@ const GamePage = () => {
                   handlePreviousStage={handlePreviousStageGameOptions}
                 />
               ) : null}
-              {gameLogic.canPlay ? <PlayGame game={gameLogic} /> : null}
+              {gameLogic.canPlay ? (
+                <PlayGame game={gameLogic} onFinishGame={handleOnFinishGame} />
+              ) : null}
             </GameBoard>
 
             {gameLogic.canPlay && gameLogic.gameOptions?.players ? (

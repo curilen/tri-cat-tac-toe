@@ -80,8 +80,8 @@ export default class GameLogic {
       this._tokenSelected.filter((e) => e === this._firstPlayerPlay?.token)
         .length || 0;
     if (this.gameSettings?.winnerBeVerified(movementsMade)) {
-      if (this.isWinner()) {
-        this._isFinishGame = true;
+      if (this.checkIsWinner()) {
+        return true;
       }
     }
 
@@ -89,8 +89,8 @@ export default class GameLogic {
     return true;
   }
 
-  private isWinner() {
-    const isWinner = false;
+  private checkIsWinner() {
+    let isWinner = false;
     if (!this.gameSettings || !this.currentTurn) {
       return isWinner;
     }
@@ -101,7 +101,34 @@ export default class GameLogic {
         playerPositions.push(t);
       }
     }
-
+    playerPositions.sort();
+    isWinner = this.validateWinner(new Set(playerPositions));
+    if (isWinner) {
+      this._isFinishGame = true;
+    }
     return isWinner;
+  }
+
+  private validateWinner(playerPositions: Set<number>) {
+    if (!this.gameSettings) {
+      return false;
+    }
+
+    // Matriz O(mn)
+    for (const subarray of this.gameSettings.victoryPatterns) {
+      let foundAllElements = true;
+      for (const element of subarray) {
+        // has O(1)
+        if (!playerPositions.has(element)) {
+          foundAllElements = false;
+          break;
+        }
+      }
+      if (foundAllElements) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }
