@@ -61,8 +61,25 @@ export default class GameLogic {
       return false;
     }
     this._gameSettings?.createVictoryPatterns();
-    this._currentTurn = this.gameOptions?.players[Math.round(Math.random())];
-    this._firstPlayerPlay = this._currentTurn;
+    if (this.gameOptions?.players) {
+      const isRematch = this.gameOptions.players.some((p) => p.won > 0);
+      let newIdxTurn = 0;
+      console.log('CHECK IS REMATCH', isRematch, this._currentTurn, this);
+      if (isRematch && this._currentTurn) {
+        const prevId = this.currentTurn?.id;
+        newIdxTurn = this.gameOptions.players.findLastIndex(
+          (p) => p.id !== prevId
+        );
+        console.log('VALIDO EL JUGADOR PREVIO', prevId, newIdxTurn);
+        if (newIdxTurn < 0) {
+          newIdxTurn = 0;
+        }
+      } else {
+        newIdxTurn = Math.round(Math.random());
+      }
+      this._currentTurn = this.gameOptions.players[newIdxTurn];
+      this._firstPlayerPlay = this._currentTurn;
+    }
     this._isFinishGame = false;
     this._winningPositions = [];
     this._winner = null;

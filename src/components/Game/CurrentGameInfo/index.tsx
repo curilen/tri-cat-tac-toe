@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useCallback } from 'react';
 
 import { SIDE_BOARDS_ROTATION } from '@/constants/positions';
 import {
@@ -14,14 +14,22 @@ interface ICurrentGameInfoProps {
   currentTurn: IGamePlayers;
   winner?: IGamePlayers | null;
   isFinished?: boolean;
+  onClickRematch?: () => void;
 }
 
 const CurrentGameInfo = ({
   currentTurn,
   isFinished = false,
   winner = null,
+  onClickRematch,
 }: ICurrentGameInfoProps) => {
   const { textures } = useMyTextures(GAME_BOARD_TEXTURES);
+
+  const handleRematch = useCallback(() => {
+    if (onClickRematch) {
+      onClickRematch();
+    }
+  }, [onClickRematch]);
 
   return (
     <group position={[8, 0, 2]} rotation={[0, -SIDE_BOARDS_ROTATION, 0]}>
@@ -36,7 +44,7 @@ const CurrentGameInfo = ({
       {!isFinished ? (
         <CurrentTurn currentTurn={currentTurn} />
       ) : (
-        <GameOver winner={winner} />
+        <GameOver winner={winner} onClickRematch={handleRematch} />
       )}
     </group>
   );

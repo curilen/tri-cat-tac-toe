@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
 
 import GameLogic from '@/gameLogic';
@@ -8,15 +8,22 @@ const CurrentGameInfo = dynamic(import('@/components/Game/CurrentGameInfo'));
 interface IPlayGameProps {
   game: GameLogic;
   onFinishGame?: (game: GameLogic) => void;
+  onClickRematch?: () => void;
 }
 
-const PlayGame = ({ game, onFinishGame }: IPlayGameProps) => {
+const PlayGame = ({ game, onFinishGame, onClickRematch }: IPlayGameProps) => {
   const [tokenSelected, setTokenSelected] = useState(game.tokenSelected);
-
   const tokenList = useMemo(
     () => game.gameSettings?.getTokenList() || [],
     [game.gameSettings]
   );
+
+  useEffect(() => {
+    if (JSON.stringify(tokenSelected) !== JSON.stringify(game.tokenSelected)) {
+      // New game
+      setTokenSelected([...game.tokenSelected]);
+    }
+  }, [game.tokenSelected, tokenSelected]);
 
   const handleSelectToken = useCallback(
     (numOrderToken: number) => {
@@ -28,6 +35,12 @@ const PlayGame = ({ game, onFinishGame }: IPlayGameProps) => {
     },
     [game, onFinishGame]
   );
+
+  const handleRematch = useCallback(() => {
+    if (onClickRematch) {
+      onClickRematch();
+    }
+  }, [onClickRematch]);
 
   const TokensComponent = useCallback(() => {
     return (
@@ -58,6 +71,7 @@ const PlayGame = ({ game, onFinishGame }: IPlayGameProps) => {
           currentTurn={game.currentTurn}
           winner={game.winner}
           isFinished={game.isFinishGame}
+          onClickRematch={handleRematch}
         />
       ) : null}
     </>

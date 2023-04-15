@@ -31,7 +31,7 @@
       "title": "Juego terminado",
       "winner": "El ganador es",
       "tie": "Es un empate",
-      "newGame": "Revancha"
+      "rematch": "Revancha"
     }
   },
   "scoreboard": {

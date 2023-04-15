@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useCallback } from 'react';
 import { useTranslation } from 'next-i18next';
 import { Center } from '@react-three/drei';
 
@@ -11,10 +11,17 @@ import GameButton from '../GameButton';
 
 interface IGameOverProps {
   winner: IGamePlayers | null;
+  onClickRematch?: () => void;
 }
 
-const GameOver = ({ winner }: IGameOverProps) => {
+const GameOver = ({ winner, onClickRematch }: IGameOverProps) => {
   const { t } = useTranslation([I18N_KEY_NS_GAME_PAGE]);
+
+  const handleRematch = useCallback(() => {
+    if (onClickRematch) {
+      onClickRematch();
+    }
+  }, [onClickRematch]);
 
   return (
     <group>
@@ -52,10 +59,11 @@ const GameOver = ({ winner }: IGameOverProps) => {
       <Center disableY disableZ position={[0, -1.5, 0.5]}>
         <GameButton
           text={
-            t(`${I18N_KEY_NS_GAME_PAGE}:currentGameInfo.gameOver.newGame`) || ''
+            t(`${I18N_KEY_NS_GAME_PAGE}:currentGameInfo.gameOver.rematch`) || ''
           }
           width={4.5}
           depth={0.5}
+          onClick={handleRematch}
         />
       </Center>
     </group>

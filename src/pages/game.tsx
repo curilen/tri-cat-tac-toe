@@ -46,8 +46,8 @@ const GamePage = () => {
     }
     setGameLogic((prevState) => {
       prevState?.gameOptions?.finishStage(value, refId);
-      if (gameLogic.gameOptions?.isComplete) {
-        gameLogic.startGame();
+      if (prevState.gameOptions?.isComplete) {
+        prevState.startGame();
       }
       return prevState.clone();
     });
@@ -63,6 +63,13 @@ const GamePage = () => {
 
   const handleOnFinishGame = (newGame: GameLogic) =>
     setGameLogic(newGame.clone());
+
+  const handleRematch = () => {
+    setGameLogic((prevState) => {
+      prevState.startGame();
+      return prevState.clone();
+    });
+  };
 
   return (
     <MainLayout>
@@ -85,7 +92,11 @@ const GamePage = () => {
                 />
               ) : null}
               {gameLogic.canPlay ? (
-                <PlayGame game={gameLogic} onFinishGame={handleOnFinishGame} />
+                <PlayGame
+                  game={gameLogic}
+                  onFinishGame={handleOnFinishGame}
+                  onClickRematch={handleRematch}
+                />
               ) : null}
             </GameBoard>
 
