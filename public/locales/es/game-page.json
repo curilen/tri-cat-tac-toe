@@ -23,11 +23,15 @@
       "title": "Elige tu ficha"
     }
   },
-  "currentTurn": {
-    "title": "Tu turno",
-    "finished": "Juego terminado",
-    "winner": "El ganador es",
-    "tie": "Es un empate"
+  "currentGameInfo": {
+    "currentTurn": {
+      "title": "Tu turno"
+    },
+    "gameOver": {
+      "title": "Juego terminado",
+      "winner": "El ganador es",
+     "tie": "Es un empate"
+    }
   },
   "scoreboard": {
     "title": "Victorias"

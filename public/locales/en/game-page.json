@@ -23,11 +23,15 @@
       "title": "Choose your token"
     }
   },
-  "currentTurn": {
-    "title": "Your Turn",
-    "finished": "Game Over",
-    "winner": "The winner is",
-    "tie": "It's a tie"
+  "currentGameInfo": {
+    "currentTurn": {
+      "title": "Your Turn"
+    },
+    "gameOver": {
+      "title": "Game Over",
+      "winner": "The winner is",
+     "tie": "It's a tie"
+    }
   },
   "scoreboard": {
     "title": "Victories"

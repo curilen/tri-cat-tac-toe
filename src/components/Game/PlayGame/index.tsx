@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 
 import GameLogic from '@/gameLogic';
 import GameToken from '@/components/Game/GameToken';
-const CurrentTurn = dynamic(import('@/components/Game/CurrentTurn'));
+const CurrentGameInfo = dynamic(import('@/components/Game/CurrentGameInfo'));
 
 interface IPlayGameProps {
   game: GameLogic;
@@ -54,7 +54,7 @@ const PlayGame = ({ game, onFinishGame }: IPlayGameProps) => {
         <TokensComponent />
       </group>
       {game.currentTurn ? (
-        <CurrentTurn
+        <CurrentGameInfo
           currentTurn={game.currentTurn}
           winner={game.winner}
           isFinished={game.isFinishGame}
