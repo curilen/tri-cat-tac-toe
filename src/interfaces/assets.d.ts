@@ -19,4 +19,6 @@ interface ITextureConfig {
   displacementBias?: number;
 
   normalScale?: import('three').Vector2;
+
+  aoMapIntensity?: number;
 }

@@ -76,7 +76,7 @@ const GamePage = () => {
       <Canvas>
         <MainCamera ref={cameraRef} />
 
-        <ambientLight intensity={0.5} color={LIGHT_COLOR} />
+        <ambientLight intensity={1} color={LIGHT_COLOR} />
         <color attach="background" args={[GAME_BACKGROUND_COLOR]} />
 
         <Suspense fallback={null}>

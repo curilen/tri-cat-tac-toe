@@ -7,14 +7,10 @@ import {
   SIDE_BOARDS_ROTATION,
 } from '@/constants/positions';
 import {
-  GAME_BOARD_TEXTURES,
-  GAME_BOARD_TEXTURES_CONFIG,
+  GAME_SCOREBOARD_TEXTURES,
+  GAME_SCOREBOARD_TEXTURES_CONFIG,
 } from '@/constants/textures';
-import {
-  BOARD_TEXT_COLOR,
-  SCOREBOARD_VALUE_COLOR,
-  TEXT_DEFAULT_COLOR,
-} from '@/constants/colors';
+import { BOARD_TEXT_COLOR, SCOREBOARD_VALUE_COLOR } from '@/constants/colors';
 import { I18N_KEY_NS_GAME_PAGE } from '@/constants/common';
 import useMyTextures from '@/hooks/useMyTextures';
 
@@ -26,7 +22,7 @@ interface IScoreBoardProps {
 
 const ScoreBoard = ({ players }: IScoreBoardProps) => {
   const { t } = useTranslation([I18N_KEY_NS_GAME_PAGE]);
-  const { textures } = useMyTextures(GAME_BOARD_TEXTURES);
+  const { textures } = useMyTextures(GAME_SCOREBOARD_TEXTURES);
 
   const Data = useCallback(() => {
     if (!players || players.length < 1) {
@@ -36,7 +32,7 @@ const ScoreBoard = ({ players }: IScoreBoardProps) => {
     const playersScore = players.map((player, idx) => {
       return (
         <group key={`score-${idx}`} position={[-2, -(idx * 1.2), 0.5]}>
-          <GameText color={TEXT_DEFAULT_COLOR} size={0.5}>
+          <GameText color={BOARD_TEXT_COLOR} size={0.5}>
             {player.displayName}
           </GameText>
           <GameText
@@ -60,7 +56,7 @@ const ScoreBoard = ({ players }: IScoreBoardProps) => {
         <meshStandardMaterial
           attach="material"
           {...textures}
-          {...GAME_BOARD_TEXTURES_CONFIG}
+          {...GAME_SCOREBOARD_TEXTURES_CONFIG}
         />
       </mesh>
       <group>

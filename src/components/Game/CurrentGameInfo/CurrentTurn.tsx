@@ -1,11 +1,7 @@
 import { useTranslation } from 'next-i18next';
 import { Center } from '@react-three/drei';
 
-import {
-  BOARD_TEXT_COLOR,
-  CURRENT_TURN_VALUE_COLOR,
-  TEXT_DEFAULT_COLOR,
-} from '@/constants/colors';
+import { BOARD_TEXT_COLOR, CURRENT_TURN_VALUE_COLOR } from '@/constants/colors';
 import { I18N_KEY_NS_GAME_PAGE } from '@/constants/common';
 import { CURRENT_TURN_VALUE_POSITION } from '@/constants/positions';
 
@@ -36,7 +32,7 @@ const CurrentTurn = ({ currentTurn }: ICurrentTurnProps) => {
         </GameText>
       </Center>
       <Center disableY position={[0, -1.5, 0.3]}>
-        <GameText color={TEXT_DEFAULT_COLOR} size={0.4}>
+        <GameText color={BOARD_TEXT_COLOR} size={0.4}>
           {currentTurn.displayName}
         </GameText>
       </Center>

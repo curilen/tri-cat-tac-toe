@@ -2,8 +2,8 @@ import { memo, useCallback } from 'react';
 
 import { SIDE_BOARDS_ROTATION } from '@/constants/positions';
 import {
-  GAME_BOARD_TEXTURES,
-  GAME_BOARD_TEXTURES_CONFIG,
+  GAME_BOARD_INFO_TEXTURES,
+  GAME_BOARD_INFO_TEXTURES_CONFIG,
 } from '@/constants/textures';
 import useMyTextures from '@/hooks/useMyTextures';
 
@@ -23,7 +23,7 @@ const CurrentGameInfo = ({
   winner = null,
   onClickRematch,
 }: ICurrentGameInfoProps) => {
-  const { textures } = useMyTextures(GAME_BOARD_TEXTURES);
+  const { textures } = useMyTextures(GAME_BOARD_INFO_TEXTURES);
 
   const handleRematch = useCallback(() => {
     if (onClickRematch) {
@@ -38,7 +38,7 @@ const CurrentGameInfo = ({
         <meshStandardMaterial
           attach="material"
           {...textures}
-          {...GAME_BOARD_TEXTURES_CONFIG}
+          {...GAME_BOARD_INFO_TEXTURES_CONFIG}
         />
       </mesh>
       {!isFinished ? (
