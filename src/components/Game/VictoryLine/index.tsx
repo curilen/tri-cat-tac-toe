@@ -3,6 +3,8 @@ import { Euler, Vector3 } from 'three';
 
 import GameLogic from '@/gameLogic';
 import { GAME_WINNING_TYPE_LINES } from '@/constants/game';
+import { BOARD_PADDING, GAME_TOKEN_BOX_SIZE } from '@/constants/positions';
+import { GAME_VICTORY_LINE_COLOR } from '@/constants/colors';
 
 interface IVictoryLineProps {
   game: GameLogic;
@@ -31,9 +33,20 @@ const VictoryLine = ({ game }: IVictoryLineProps) => {
   }, [winningTypeBoard, game.winningPositions]);
 
   const position = useMemo(() => {
-    const totalCols = game.gameSettings?.totalColumns || 3;
-    const newPosRow = totalCols + -game.winningPositions[0];
-    const newPosCol = -totalCols + game.winningPositions[0] * totalCols;
+    if (!game.gameSettings) {
+      return new Vector3(0, 0, 0);
+    }
+    let boardSpace = game.gameSettings.boardSize / 2;
+    boardSpace -= GAME_TOKEN_BOX_SIZE;
+    boardSpace -= BOARD_PADDING / 2;
+
+    const rowNumber = game.winningPositions[0] / game.gameSettings.totalColumns;
+
+    const newPosRow =
+      boardSpace - rowNumber * game.gameSettings.incrementDistnceToken;
+    const newPosCol =
+      -boardSpace +
+      game.winningPositions[0] * game.gameSettings.incrementDistnceToken;
 
     switch (winningTypeBoard) {
       case GAME_WINNING_TYPE_LINES.ROWS:
@@ -47,20 +60,23 @@ const VictoryLine = ({ game }: IVictoryLineProps) => {
     winningTypeBoard,
     game.gameSettings?.totalColumns,
     game.winningPositions,
+    game.gameSettings,
   ]);
 
-  if (!game.gameSettings || winningTypeBoard === null) {
-    return <></>;
-  }
+  const widthLine = useMemo(
+    () => (game.gameSettings?.boardSize || 0) - BOARD_PADDING,
+    [game.gameSettings?.boardSize]
+  );
 
   return (
     <group position={[0, 0, 3]}>
       <mesh position={position} rotation={rotation}>
-        <boxGeometry
-          attach="geometry"
-          args={[0.4, 0.4, game.gameSettings.totalToken]}
+        <boxGeometry attach="geometry" args={[0.4, 0.4, widthLine]} />
+        <meshStandardMaterial
+          attach="material"
+          metalness={0.3}
+          color={GAME_VICTORY_LINE_COLOR}
         />
-        <meshStandardMaterial attach="material" metalness={0.3} />
       </mesh>
     </group>
   );

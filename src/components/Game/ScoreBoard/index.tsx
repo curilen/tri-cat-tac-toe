@@ -1,8 +1,9 @@
-import { memo, useCallback } from 'react';
+import { memo, useCallback, useMemo } from 'react';
 import { Center } from '@react-three/drei';
 import { useTranslation } from 'next-i18next';
 
 import {
+  BOARD_SIZE_DEFAULT,
   SCORE_BOARD_VALUE_POSITION,
   SIDE_BOARDS_ROTATION,
 } from '@/constants/positions';
@@ -18,11 +19,19 @@ import GameText from '@/components/Game/GameText';
 
 interface IScoreBoardProps {
   players: IGamePlayers[];
+  boardSize?: number;
 }
 
-const ScoreBoard = ({ players }: IScoreBoardProps) => {
+const ScoreBoard = ({
+  players,
+  boardSize = BOARD_SIZE_DEFAULT,
+}: IScoreBoardProps) => {
   const { t } = useTranslation([I18N_KEY_NS_GAME_PAGE]);
   const { textures } = useMyTextures(GAME_SCOREBOARD_TEXTURES);
+  const distanceBoard = useMemo(
+    () => -Math.round(boardSize / 1.4),
+    [boardSize]
+  );
 
   const Data = useCallback(() => {
     if (!players || players.length < 1) {
@@ -50,7 +59,10 @@ const ScoreBoard = ({ players }: IScoreBoardProps) => {
   }, [players]);
 
   return (
-    <group position={[-8, 0, 2]} rotation={[0, SIDE_BOARDS_ROTATION, 0]}>
+    <group
+      position={[distanceBoard, 0, 2]}
+      rotation={[0, SIDE_BOARDS_ROTATION, 0]}
+    >
       <mesh>
         <boxGeometry attach="geometry" args={[5, 5, 0.5]} />
         <meshStandardMaterial

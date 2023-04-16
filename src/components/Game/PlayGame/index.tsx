@@ -76,6 +76,7 @@ const PlayGame = ({ game, onFinishGame, onClickRematch }: IPlayGameProps) => {
           winner={game.winner}
           isFinished={game.isFinishGame}
           onClickRematch={handleRematch}
+          boardSize={game.gameSettings?.boardSize}
         />
       ) : null}
     </>

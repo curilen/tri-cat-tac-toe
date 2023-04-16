@@ -1,6 +1,7 @@
-import type { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { LIGHT_COLOR } from '@/constants/colors';
 import {
+  BOARD_SIZE_DEFAULT,
   DEFAULT_POSITION,
   LIGHTS_BOARD_DEFAULT_POSITION,
 } from '@/constants/positions';
@@ -12,11 +13,14 @@ import useMyTextures from '@/hooks/useMyTextures';
 
 interface IGameBoardProps {
   children?: ReactNode;
+  size?: number;
 }
 
-const GameBoard = ({ children }: IGameBoardProps) => {
+const GameBoard = ({
+  children,
+  size = BOARD_SIZE_DEFAULT,
+}: IGameBoardProps) => {
   const { textures } = useMyTextures(GAME_BOARD_TEXTURES);
-
   return (
     <group>
       {LIGHTS_BOARD_DEFAULT_POSITION.map((position, idx) => (
@@ -31,7 +35,7 @@ const GameBoard = ({ children }: IGameBoardProps) => {
       ))}
 
       <mesh position={DEFAULT_POSITION}>
-        <boxGeometry attach="geometry" args={[10, 10, 1]} />
+        <boxGeometry attach="geometry" args={[size, size, 1]} />
         <meshStandardMaterial
           attach="material"
           {...textures}

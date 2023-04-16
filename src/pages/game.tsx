@@ -81,9 +81,9 @@ const GamePage = () => {
 
         <Suspense fallback={null}>
           <group position={[0, -1, 0]}>
-            <GameTitle />
+            <GameTitle boardSize={gameLogic.gameSettings?.boardSize} />
 
-            <GameBoard>
+            <GameBoard size={gameLogic.gameSettings?.boardSize}>
               {!gameLogic.canPlay && gameLogic.gameOptions ? (
                 <GameOptions
                   options={gameLogic.gameOptions}
@@ -101,7 +101,10 @@ const GamePage = () => {
             </GameBoard>
 
             {gameLogic.canPlay && gameLogic.gameOptions?.players ? (
-              <ScoreBoard players={gameLogic.gameOptions.players} />
+              <ScoreBoard
+                players={gameLogic.gameOptions.players}
+                boardSize={gameLogic.gameSettings?.boardSize}
+              />
             ) : null}
           </group>
           <OrbitControls camera={cameraRef.current || undefined} />

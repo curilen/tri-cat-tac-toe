@@ -1,8 +1,9 @@
 import { Vector3 } from 'three';
 
 import {
-  GAME_TOKEN_FIRST_XAXIS,
-  GAME_TOKEN_FIRST_YAXIS,
+  BOARD_PADDING,
+  GAME_TOKEN_BOX_SIZE,
+  GAME_TOKEN_SPACE_BETWEEN,
   GAME_TOKEN_ZAXIS_MIN,
 } from '@/constants/positions';
 import { GAME_WINNING_TYPE_LINES } from '@/constants/game';
@@ -31,30 +32,45 @@ export default class GameSettingsLogic implements IGameSettingsLogic {
     return this._totalRows;
   }
 
+  public get boardSize() {
+    return (
+      GAME_TOKEN_BOX_SIZE * this.totalColumns +
+      GAME_TOKEN_SPACE_BETWEEN * (this.totalColumns - 1) +
+      BOARD_PADDING * 2
+    );
+  }
+
+  public get incrementDistnceToken() {
+    return GAME_TOKEN_SPACE_BETWEEN + GAME_TOKEN_BOX_SIZE;
+  }
+
   public getTokenList() {
     const tokenList: IGameTokenElement[] = [];
-    let lastXAxis = GAME_TOKEN_FIRST_XAXIS * 2;
-    let lastYAxis = GAME_TOKEN_FIRST_YAXIS * 2;
+    const firstX = -(
+      GAME_TOKEN_BOX_SIZE +
+      this.totalColumns +
+      this.totalColumns * 0.8
+    );
+    let lastX = firstX;
+    let lastY = this.boardSize / 2 - BOARD_PADDING - GAME_TOKEN_BOX_SIZE / 2;
 
     for (let i = 0; i < this.totalToken; i++) {
       const colNumber = (i + 1) % this._totalColumns;
       const isLastCol = colNumber === 0;
+      const xAxis = lastX + this.incrementDistnceToken;
 
-      const xAxis = lastXAxis - GAME_TOKEN_FIRST_XAXIS;
-      const yAxis = lastYAxis - GAME_TOKEN_FIRST_YAXIS;
-
-      if (isLastCol) {
-        lastXAxis = GAME_TOKEN_FIRST_XAXIS * 2;
-        lastYAxis = yAxis;
-      } else {
-        lastXAxis = xAxis;
-      }
-
-      const position = new Vector3(xAxis, yAxis, GAME_TOKEN_ZAXIS_MIN);
+      const position = new Vector3(xAxis, lastY, GAME_TOKEN_ZAXIS_MIN);
       tokenList.push({
         order: i + 1,
         position,
       });
+
+      if (isLastCol) {
+        lastX = firstX;
+        lastY -= this.incrementDistnceToken;
+      } else {
+        lastX = xAxis;
+      }
     }
 
     return tokenList;

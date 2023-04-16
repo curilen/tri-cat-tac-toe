@@ -7,7 +7,10 @@ import {
   GAME_TOKEN_TEXTURES,
   GAME_TOKEN_TEXTURES_CONFIG,
 } from '@/constants/textures';
-import { GAME_TOKEN_VALUE_POSITION } from '@/constants/positions';
+import {
+  GAME_TOKEN_BOX_SIZE,
+  GAME_TOKEN_VALUE_POSITION,
+} from '@/constants/positions';
 import { GAME_TOKEN_VALUE_COLOR } from '@/constants/colors';
 import {
   GAME_TOKEN_MAX_ROTATION_DEGREES,
@@ -88,7 +91,10 @@ const GameToken = ({
         onPointerOut={handlePointerOut}
         onClick={handleClick}
       >
-        <RoundedBox radius={0.2} args={[1.5, 1.5, 1.5]}>
+        <RoundedBox
+          radius={0.2}
+          args={[GAME_TOKEN_BOX_SIZE, GAME_TOKEN_BOX_SIZE, GAME_TOKEN_BOX_SIZE]}
+        >
           {value ? (
             <>
               <meshBasicMaterial
