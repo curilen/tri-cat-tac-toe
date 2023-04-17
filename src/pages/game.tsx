@@ -73,7 +73,7 @@ const GamePage = () => {
 
   return (
     <MainLayout>
-      <Canvas>
+      <Canvas frameloop="demand">
         <MainCamera ref={cameraRef} />
 
         <ambientLight intensity={1} color={LIGHT_COLOR} />

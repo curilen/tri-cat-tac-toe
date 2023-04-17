@@ -1,7 +1,7 @@
-import { memo, useCallback, useRef } from 'react';
+import { memo, useRef } from 'react';
 import type { Mesh, BufferGeometry, Material } from 'three';
 import { RoundedBox } from '@react-three/drei';
-import { ThreeEvent, useFrame } from '@react-three/fiber';
+import type { ThreeEvent } from '@react-three/fiber';
 
 import {
   GAME_TOKEN_TEXTURES,
@@ -14,27 +14,32 @@ import {
 import { GAME_TOKEN_VALUE_COLOR } from '@/constants/colors';
 import {
   GAME_TOKEN_MAX_ROTATION_DEGREES,
-  GAME_TOKEN_ROTATION_SPEED,
+  GAME_TOKEN_ROTATION_TIME_MILLS,
 } from '@/constants/rotation';
 
 import useMyTextures from '@/hooks/useMyTextures';
+import useAnimation from '@/hooks/useAnimation';
+
 import GameText from '@/components/Game/GameText';
 
 interface IGameTokenProps extends IGameTokenElement {
   order: number;
   value?: keyof IGameTokens | null;
   canSelected?: boolean;
-  rotationSpeed?: GAME_TOKEN_ROTATION_SPEED;
   onFinish?: (orderToken: number) => void | Promise<undefined>;
   withAnimation?: boolean;
 }
+
+const initalXRotation = 0;
+const radiantsDegrees = (Math.PI / 180) * GAME_TOKEN_MAX_ROTATION_DEGREES;
+const radMills =
+  (radiantsDegrees - initalXRotation) / GAME_TOKEN_ROTATION_TIME_MILLS;
 
 const GameToken = ({
   order,
   value,
   position,
   canSelected = true,
-  rotationSpeed = GAME_TOKEN_ROTATION_SPEED.NORMAL,
   onFinish,
   withAnimation = true,
 }: IGameTokenProps) => {
@@ -57,30 +62,31 @@ const GameToken = ({
     }
     if (withAnimation) {
       isRotating.current = true;
+      startAnimation();
     } else if (onFinish) {
       onFinish(order);
     }
   };
 
-  const handleRotation = useCallback(() => {
-    if (!canSelected || !meshRef.current) {
-      return;
+  const handleFinishAnimation = () => (onFinish ? onFinish(order) : null);
+
+  const handleRotation = (elapsedTime: number) => {
+    if (!canSelected || !meshRef.current || !isRotating.current) {
+      return false;
     }
 
-    if (isRotating.current) {
-      const radiantsDegrees = (Math.PI / 180) * GAME_TOKEN_MAX_ROTATION_DEGREES;
-      meshRef.current.rotation.x += rotationSpeed;
+    const diffRotation = radMills * elapsedTime;
+    const newRotation = initalXRotation + diffRotation;
 
-      if (meshRef.current.rotation.x >= radiantsDegrees) {
-        isRotating.current = false;
-        meshRef.current.rotation.x = 0;
-        if (onFinish) {
-          onFinish(order);
-        }
-      }
-    }
-  }, [canSelected, meshRef, rotationSpeed, onFinish, order]);
-  useFrame(handleRotation, 0);
+    meshRef.current.rotation.x = newRotation;
+    return true;
+  };
+
+  const { startAnimation } = useAnimation({
+    animationFunction: handleRotation,
+    maxTime: GAME_TOKEN_ROTATION_TIME_MILLS,
+    onFinish: handleFinishAnimation,
+  });
 
   return (
     <group position={position || [0, 0, 2]}>

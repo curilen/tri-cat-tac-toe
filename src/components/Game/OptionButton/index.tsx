@@ -1,6 +1,6 @@
 import { useMemo, useRef } from 'react';
 import type { Mesh, BufferGeometry, Material, Group } from 'three';
-import { ThreeEvent } from '@react-three/fiber';
+import type { ThreeEvent } from '@react-three/fiber';
 import { Center } from '@react-three/drei';
 
 import { BOARD_OPTION_BUTTON_COLOR } from '@/constants/colors';
@@ -21,10 +21,9 @@ interface IOptionButtonProps {
   onClick?: (id?: string) => void | Promise<undefined>;
 }
 
-const animationTime = 150;
-const animationRealTime = (animationTime || 1) / 10;
-const halfAnimation = animationRealTime / 2;
-const minZAxisAnimation = 0.1;
+const animationTime = 200;
+const minZScaleAnimation = 0.1;
+const minZPosition = 0.5;
 
 const OptionButton = ({
   id,
@@ -38,28 +37,28 @@ const OptionButton = ({
     null
   );
   const buttonGroupRef = useRef<Group | null>(null);
-  const initialZAxisGroup = buttonGroupRef.current?.scale.z || 1;
-
-  const zAxisAnimationPercentage = useMemo(
-    () =>
-      Number(
-        ((initialZAxisGroup - minZAxisAnimation) / halfAnimation).toFixed(2)
-      ),
-    [initialZAxisGroup]
+  const initZGroup = buttonGroupRef.current?.scale.z || 1;
+  const totalDecrease = useMemo(
+    () => initZGroup - minZScaleAnimation,
+    [initZGroup]
+  );
+  const decreaseMills = useMemo(
+    () => totalDecrease / animationTime,
+    [totalDecrease]
   );
 
-  const cylinderAnimation = (delta: number) => {
-    if (buttonGroupRef.current === null) {
-      return;
+  const cylinderAnimation = (elapsedTime: number) => {
+    if (buttonGroupRef.current === null || elapsedTime > animationTime) {
+      return false;
     }
-    const currentZ = buttonGroupRef.current.scale.z;
-    const isDecrease = delta <= animationTime / 2;
 
-    if (isDecrease && currentZ >= minZAxisAnimation) {
-      buttonGroupRef.current.scale.setZ(currentZ - zAxisAnimationPercentage);
-    } else if (!isDecrease && currentZ < initialZAxisGroup) {
-      buttonGroupRef.current.scale.setZ(currentZ + zAxisAnimationPercentage);
+    const diffScale = elapsedTime * decreaseMills;
+    const newZScale = initZGroup - diffScale;
+    buttonGroupRef.current.scale.setZ(newZScale);
+    if (newZScale >= minZPosition) {
+      buttonGroupRef.current.position.setZ(newZScale);
     }
+    return true;
   };
 
   const onFinishAnimationCylinder = () => {
@@ -69,7 +68,7 @@ const OptionButton = ({
   };
 
   const { startAnimation } = useAnimation({
-    animation: cylinderAnimation,
+    animationFunction: cylinderAnimation,
     maxTime: animationTime,
     onFinish: onFinishAnimationCylinder,
   });

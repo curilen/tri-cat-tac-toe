@@ -1,56 +1,53 @@
-import { useEffect, useRef, useState } from 'react';
+import { useFrame, useThree } from '@react-three/fiber';
+import { useRef, useState } from 'react';
 
 interface IUseAnimationProps {
-  animation: (delta: number) => void;
+  animationFunction: (timeMillis: number) => boolean;
   maxTime?: number;
+  autoStopTime?: boolean;
   onFinish?: () => void;
 }
 
 const useAnimation = ({
-  animation,
+  animationFunction,
   maxTime = 2000,
   onFinish,
 }: IUseAnimationProps) => {
   const [animate, setAnimate] = useState(false);
   const firstAnimationTime = useRef(0);
+  const { invalidate: requestNewRender } = useThree();
 
-  const handleAnimation = (time: number) => {
+  const startAnimation = () => (!animate ? setAnimate(true) : null);
+  const handleFinish = () => {
     if (!animate) {
       return;
     }
+    setAnimate(false);
+    firstAnimationTime.current = 0;
+    if (onFinish) {
+      onFinish();
+    }
+  };
 
+  useFrame(({ clock }) => {
+    if (!animate) {
+      return;
+    }
     if (firstAnimationTime.current === 0) {
-      firstAnimationTime.current = time;
-    }
-    const delta = Math.round(time - firstAnimationTime.current);
-    if (delta > maxTime) {
-      firstAnimationTime.current = 0;
-      setAnimate(false);
-      if (onFinish) {
-        onFinish();
-      }
-      return;
+      firstAnimationTime.current = clock.elapsedTime * 1000;
     }
 
-    animation(delta);
-    requestAnimationFrame(handleAnimation);
-  };
+    const time = Math.round(
+      clock.elapsedTime * 1000 - firstAnimationTime.current
+    );
+    const continueAnimation = animationFunction(time);
 
-  useEffect(() => {
-    if (animate) {
-      requestAnimationFrame(handleAnimation);
+    if (continueAnimation && time < maxTime) {
+      requestNewRender();
+    } else {
+      handleFinish();
     }
-    // Next line for handleAnimation dependency. Better performance for rerender
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [animate]);
-
-  const startAnimation = () => {
-    if (animate) {
-      return;
-    }
-
-    setAnimate(true);
-  };
+  });
 
   return {
     startAnimation,

@@ -56,12 +56,7 @@ const VictoryLine = ({ game }: IVictoryLineProps) => {
       default:
         return new Vector3(0, 0, 0);
     }
-  }, [
-    winningTypeBoard,
-    game.gameSettings?.totalColumns,
-    game.winningPositions,
-    game.gameSettings,
-  ]);
+  }, [winningTypeBoard, game.winningPositions, game.gameSettings]);
 
   const widthLine = useMemo(
     () => (game.gameSettings?.boardSize || 0) - BOARD_PADDING,
