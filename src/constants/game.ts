@@ -22,6 +22,7 @@ export const GAME_TOKENS: IGameTokens = {
   O: 'O',
 };
 
+export const GAME_PLAYER_CPU_ID = 'player-two';
 export const GAME_PLAYERS_DEFAULT: IGamePlayers[] = [
   {
     id: 'player-one',
@@ -29,7 +30,7 @@ export const GAME_PLAYERS_DEFAULT: IGamePlayers[] = [
     won: 0,
   },
   {
-    id: 'player-two',
+    id: GAME_PLAYER_CPU_ID,
     displayName: 'Player 2',
     won: 0,
   },

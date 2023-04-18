@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 
 import GameLogic from '@/gameLogic';
@@ -18,13 +18,28 @@ const PlayGame = ({ game, onFinishGame, onClickRematch }: IPlayGameProps) => {
     () => game.gameSettings?.getTokenList() || [],
     [game.gameSettings]
   );
+  const tokensRef = useRef<Array<IGameTokenRef | null>>(
+    new Array(tokenList.length).fill(null)
+  );
+
+  const simulateHandleSelectToken = useCallback((position: number) => {
+    if (position < 0 || position > tokensRef.current.length - 1) {
+      return;
+    }
+    if (tokensRef.current[position] === null) {
+      return;
+    }
+    tokensRef.current[position]?.callOnClick();
+  }, []);
 
   useEffect(() => {
     if (JSON.stringify(tokenSelected) !== JSON.stringify(game.tokenSelected)) {
       // New game
       setTokenSelected([...game.tokenSelected]);
+    } else if (game.isCPUTurn() && !game.isFinishGame) {
+      simulateHandleSelectToken(game.getCPUMovement());
     }
-  }, [game.tokenSelected, tokenSelected]);
+  }, [game, tokenSelected, simulateHandleSelectToken]);
 
   const handleSelectToken = useCallback(
     (numOrderToken: number) => {
@@ -55,6 +70,7 @@ const PlayGame = ({ game, onFinishGame, onClickRematch }: IPlayGameProps) => {
               value={value}
               onFinish={handleSelectToken}
               canSelected={value === null && !game.isFinishGame}
+              ref={(el) => (tokensRef.current[idx] = el)}
             />
           );
         })}

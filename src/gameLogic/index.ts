@@ -1,10 +1,14 @@
+import { GAME_OPTIONS_MODE, GAME_PLAYER_CPU_ID } from '@/constants/game';
 import GameOptionsLogic from './gameOptions';
 import GameSettingsLogic from './gameSettings';
+import GameMovementDifficulty from './gameMovementDifficulty';
 
 export default class GameLogic {
   private _gameOptions?: GameOptionsLogic;
-  private _currentTurn?: IGamePlayers;
   private _gameSettings?: GameSettingsLogic;
+  private _gameMovementDifficulty?: GameMovementDifficulty;
+
+  private _currentTurn?: IGamePlayers;
   private _tokenSelected: Array<keyof IGameTokens | null> = [];
   private _isFinishGame = false;
   private _firstPlayerPlay: IGamePlayers | null = null;
@@ -56,11 +60,34 @@ export default class GameLogic {
     return Object.assign(Object.create(Object.getPrototypeOf(this)), this);
   }
 
+  public isCPUTurn() {
+    if (this.gameOptions?.mode !== GAME_OPTIONS_MODE.OneVSCPU) {
+      return false;
+    }
+    return this.isCPUPlayer(this.currentTurn);
+  }
+
+  public getCPUMovement() {
+    if (!this.isCPUTurn() || !this._gameMovementDifficulty) {
+      return -1;
+    }
+
+    return this._gameMovementDifficulty.getNextMove(this.tokenSelected);
+  }
+
   public startGame() {
     if (!this.canPlay || !this.gameOptions?.players) {
       return false;
     }
     this._gameSettings?.createVictoryPatterns();
+    if (
+      this.gameOptions?.mode !== undefined &&
+      this.gameOptions.mode === GAME_OPTIONS_MODE.OneVSCPU
+    ) {
+      this._gameMovementDifficulty = new GameMovementDifficulty(
+        this.gameOptions.difficulty
+      );
+    }
     if (this.gameOptions?.players) {
       const isRematch = this.gameOptions.players.some((p) => p.won > 0);
       let newIdxTurn = 0;
@@ -84,6 +111,7 @@ export default class GameLogic {
     if (this._gameSettings) {
       this._tokenSelected = new Array(this._gameSettings.totalToken).fill(null);
     }
+    return true;
   }
 
   public makeMove(numOrderToken: number) {
@@ -165,5 +193,12 @@ export default class GameLogic {
     }
 
     return false;
+  }
+
+  private isCPUPlayer(player?: IGamePlayers) {
+    if (!player) {
+      return false;
+    }
+    return player.id === GAME_PLAYER_CPU_ID;
   }
 }

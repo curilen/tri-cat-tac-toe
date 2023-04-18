@@ -15,3 +15,7 @@ interface IGameTokenElement {
   position: import('three').Vector3;
   rotation?: import('three').Euler;
 }
+
+interface IGameTokenRef {
+  callOnClick: () => void;
+}
