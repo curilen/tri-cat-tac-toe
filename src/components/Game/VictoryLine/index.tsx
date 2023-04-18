@@ -63,6 +63,10 @@ const VictoryLine = ({ game }: IVictoryLineProps) => {
     [game.gameSettings?.boardSize]
   );
 
+  if (game.winningPositions.length < 1 || !game.isFinishGame) {
+    return <></>;
+  }
+
   return (
     <group position={[0, 0, 3]}>
       <mesh position={position} rotation={rotation}>
