@@ -1,12 +1,11 @@
 import { GAME_OPTIONS_MODE, GAME_PLAYER_CPU_ID } from '@/constants/game';
 import GameOptionsLogic from './gameOptions';
 import GameSettingsLogic from './gameSettings';
-import GameMovementDifficulty from './gameMovementDifficulty';
+import { getNextMoveDifficulty } from '@/utils/movementDifficulty';
 
 export default class GameLogic {
   private _gameOptions?: GameOptionsLogic;
   private _gameSettings?: GameSettingsLogic;
-  private _gameMovementDifficulty?: GameMovementDifficulty;
 
   private _currentTurn?: IGamePlayers;
   private _tokenSelected: Array<keyof IGameTokens | null> = [];
@@ -68,11 +67,14 @@ export default class GameLogic {
   }
 
   public getCPUMovement() {
-    if (!this.isCPUTurn() || !this._gameMovementDifficulty) {
+    if (!this.isCPUTurn() || !this.gameOptions?.difficulty) {
       return -1;
     }
 
-    return this._gameMovementDifficulty.getNextMove(this.tokenSelected);
+    return getNextMoveDifficulty(
+      this.gameOptions?.difficulty,
+      this.tokenSelected
+    );
   }
 
   public startGame() {
@@ -80,14 +82,7 @@ export default class GameLogic {
       return false;
     }
     this._gameSettings?.createVictoryPatterns();
-    if (
-      this.gameOptions?.mode !== undefined &&
-      this.gameOptions.mode === GAME_OPTIONS_MODE.OneVSCPU
-    ) {
-      this._gameMovementDifficulty = new GameMovementDifficulty(
-        this.gameOptions.difficulty
-      );
-    }
+
     if (this.gameOptions?.players) {
       const isRematch = this.gameOptions.players.some((p) => p.won > 0);
       let newIdxTurn = 0;
