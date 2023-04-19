@@ -1,4 +1,6 @@
 import { GAME_OPTIONS_MODE, GAME_PLAYER_CPU_ID } from '@/constants/game';
+import { validateWinner } from '@/utils/winner';
+
 import GameOptionsLogic from './gameOptions';
 import GameSettingsLogic from './gameSettings';
 import { getNextMoveDifficulty } from '@/utils/movementDifficulty';
@@ -143,51 +145,24 @@ export default class GameLogic {
   }
 
   private checkIsWinner() {
-    let isWinner = false;
-    if (!this.gameSettings || !this.currentTurn) {
-      return isWinner;
+    if (!this.gameSettings || !this.currentTurn || !this._currentTurn?.token) {
+      return false;
     }
 
-    const playerPositions: number[] = [];
-    for (let t = 0; t < this.tokenSelected.length; t++) {
-      if (this.tokenSelected[t] === this.currentTurn?.token) {
-        playerPositions.push(t);
-      }
-    }
-    playerPositions.sort();
-    isWinner = this.validateWinner(new Set(playerPositions));
-    if (isWinner) {
+    const res = validateWinner(
+      this.tokenSelected,
+      this.gameSettings.victoryPatterns,
+      this._currentTurn.token
+    );
+    if (res.isWinner) {
       this._isFinishGame = true;
-      this._winner = this._currentTurn || null;
+      this._winner = this._currentTurn;
+      this._winningPositions = res.winningPosition;
       if (this.gameOptions) {
         this.gameOptions.newWinner(this._winner?.id || '');
       }
     }
-    return isWinner;
-  }
-
-  private validateWinner(playerPositions: Set<number>) {
-    if (!this.gameSettings) {
-      return false;
-    }
-
-    // Matriz O(mn)
-    for (const subarray of this.gameSettings.victoryPatterns) {
-      let foundAllElements = true;
-      for (const element of subarray) {
-        // has O(1)
-        if (!playerPositions.has(element)) {
-          foundAllElements = false;
-          break;
-        }
-      }
-      if (foundAllElements) {
-        this._winningPositions = subarray;
-        return true;
-      }
-    }
-
-    return false;
+    return res.isWinner;
   }
 
   private isCPUPlayer(player?: IGamePlayers) {

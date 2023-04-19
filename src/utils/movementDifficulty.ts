@@ -47,5 +47,8 @@ const getHardMove = (tokenList: ITokenList): number => {
 };
 
 const moveEvaluation = (tokenList: ITokenList) => {
-  console.log('Move Evaluation', tokenList);
+  // For initial selection
+  if (tokenList.every((t) => t === null)) {
+    return getEasyMove(tokenList);
+  }
 };
