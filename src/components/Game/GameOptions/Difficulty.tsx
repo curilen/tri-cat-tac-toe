@@ -21,7 +21,7 @@ const GameOptionsDifficulty = ({
     <group>
       <OptionButton
         id={GAME_OPTIONS_DIFFICULTY.Easy}
-        positionX={-3}
+        positionX={-2}
         text={t(
           `${baseKeyTranslation}.options.${GAME_OPTIONS_DIFFICULTY.Easy}`
         )}
@@ -30,22 +30,24 @@ const GameOptionsDifficulty = ({
       />
       <OptionButton
         id={GAME_OPTIONS_DIFFICULTY.Medium}
-        positionX={0}
+        positionX={2}
         text={t(
           `${baseKeyTranslation}.options.${GAME_OPTIONS_DIFFICULTY.Medium}`
         )}
         textSize={0.4}
         onClick={handleOption}
       />
-      <OptionButton
-        id={GAME_OPTIONS_DIFFICULTY.Hard}
-        positionX={3}
-        text={t(
-          `${baseKeyTranslation}.options.${GAME_OPTIONS_DIFFICULTY.Hard}`
-        )}
-        textSize={0.4}
-        onClick={handleOption}
-      />
+      {/*
+        <OptionButton
+          id={GAME_OPTIONS_DIFFICULTY.Hard}
+          positionX={3}
+          text={t(
+            `${baseKeyTranslation}.options.${GAME_OPTIONS_DIFFICULTY.Hard}`
+          )}
+          textSize={0.4}
+          onClick={handleOption}
+        />
+        */}
     </group>
   );
 };

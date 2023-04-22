@@ -69,14 +69,20 @@ export default class GameLogic {
   }
 
   public getCPUMovement() {
-    if (!this.isCPUTurn() || !this.gameOptions?.difficulty) {
+    if (
+      !this.isCPUTurn() ||
+      !this.gameOptions?.difficulty ||
+      !this._currentTurn?.token
+    ) {
       return -1;
     }
 
-    return getNextMoveDifficulty(
-      this.gameOptions?.difficulty,
-      this.tokenSelected
-    );
+    return getNextMoveDifficulty({
+      difficulty: this.gameOptions?.difficulty,
+      tokenList: this.tokenSelected,
+      victoryPatterns: this.gameSettings?.victoryPatterns || [],
+      cpuPlayer: this._currentTurn?.token,
+    });
   }
 
   public startGame() {
